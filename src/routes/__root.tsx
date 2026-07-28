@@ -80,20 +80,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MIỀN TOUR – Khám phá du lịch địa phương" },
+      { title: "MIỀN TOUR – Khám phá điểm đến tiếp theo của bạn" },
       {
         name: "description",
         content:
-          "MIỀN TOUR: khám phá địa danh, xem hình ảnh, video, nghe thuyết minh Việt – Anh và chỉ đường trên Google Maps.",
+          "Khám phá điểm đến địa phương cùng MIỀN TOUR: thông tin, hình ảnh, video, Audio Guide tiếng Việt – English và chỉ đường Google Maps.",
       },
-      { property: "og:title", content: "MIỀN TOUR – Khám phá du lịch địa phương" },
+      { property: "og:title", content: "MIỀN TOUR – Khám phá điểm đến tiếp theo của bạn" },
       {
         property: "og:description",
-        content: "Khám phá địa phương – Trải nghiệm trọn vẹn cùng MIỀN TOUR.",
+        content: "Khám phá điểm đến địa phương cùng MIỀN TOUR: thông tin, hình ảnh, video, Audio Guide tiếng Việt – English và chỉ đường Google Maps.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#166534" },
+      { name: "twitter:title", content: "MIỀN TOUR – Khám phá điểm đến tiếp theo của bạn" },
+      { name: "twitter:description", content: "Khám phá điểm đến địa phương cùng MIỀN TOUR: thông tin, hình ảnh, video, Audio Guide tiếng Việt – English và chỉ đường Google Maps." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f8350f8d-1369-49cd-b369-c248a0de5596/id-preview-e50f2df3--91253c11-12fe-46ea-a228-e23eead2cde6.lovable.app-1785240635843.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f8350f8d-1369-49cd-b369-c248a0de5596/id-preview-e50f2df3--91253c11-12fe-46ea-a228-e23eead2cde6.lovable.app-1785240635843.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

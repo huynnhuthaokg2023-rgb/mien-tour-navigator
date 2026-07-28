@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "MIỀN TOUR – Khám phá điểm đến tiếp theo của bạn" },
       {
         property: "og:description",
-        content: "Khám phá địa phương – Trải nghiệm trọn vẹn.",
+        content: "Khám phá điểm đến địa phương cùng MIỀN TOUR: thông tin, hình ảnh, video, Audio Guide tiếng Việt – English và chỉ đường Google Maps.",
       },
     ],
   }),
