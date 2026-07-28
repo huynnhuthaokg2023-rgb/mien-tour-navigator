@@ -9,10 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HuongDanRouteImport } from './routes/huong-dan'
+import { Route as GioiThieuRouteImport } from './routes/gioi-thieu'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DiaDiemIndexRouteImport } from './routes/dia-diem.index'
 import { Route as KhuVucSlugRouteImport } from './routes/khu-vuc.$slug'
+import { Route as DiaDiemSlugRouteImport } from './routes/dia-diem.$slug'
 
+const HuongDanRoute = HuongDanRouteImport.update({
+  id: '/huong-dan',
+  path: '/huong-dan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GioiThieuRoute = GioiThieuRouteImport.update({
+  id: '/gioi-thieu',
+  path: '/gioi-thieu',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -28,39 +41,89 @@ const KhuVucSlugRoute = KhuVucSlugRouteImport.update({
   path: '/khu-vuc/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiaDiemSlugRoute = DiaDiemSlugRouteImport.update({
+  id: '/dia-diem/$slug',
+  path: '/dia-diem/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gioi-thieu': typeof GioiThieuRoute
+  '/huong-dan': typeof HuongDanRoute
+  '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
   '/dia-diem/': typeof DiaDiemIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gioi-thieu': typeof GioiThieuRoute
+  '/huong-dan': typeof HuongDanRoute
+  '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
   '/dia-diem': typeof DiaDiemIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gioi-thieu': typeof GioiThieuRoute
+  '/huong-dan': typeof HuongDanRoute
+  '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
   '/dia-diem/': typeof DiaDiemIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/khu-vuc/$slug' | '/dia-diem/'
+  fullPaths:
+    | '/'
+    | '/gioi-thieu'
+    | '/huong-dan'
+    | '/dia-diem/$slug'
+    | '/khu-vuc/$slug'
+    | '/dia-diem/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/khu-vuc/$slug' | '/dia-diem'
-  id: '__root__' | '/' | '/khu-vuc/$slug' | '/dia-diem/'
+  to:
+    | '/'
+    | '/gioi-thieu'
+    | '/huong-dan'
+    | '/dia-diem/$slug'
+    | '/khu-vuc/$slug'
+    | '/dia-diem'
+  id:
+    | '__root__'
+    | '/'
+    | '/gioi-thieu'
+    | '/huong-dan'
+    | '/dia-diem/$slug'
+    | '/khu-vuc/$slug'
+    | '/dia-diem/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GioiThieuRoute: typeof GioiThieuRoute
+  HuongDanRoute: typeof HuongDanRoute
+  DiaDiemSlugRoute: typeof DiaDiemSlugRoute
   KhuVucSlugRoute: typeof KhuVucSlugRoute
   DiaDiemIndexRoute: typeof DiaDiemIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/huong-dan': {
+      id: '/huong-dan'
+      path: '/huong-dan'
+      fullPath: '/huong-dan'
+      preLoaderRoute: typeof HuongDanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gioi-thieu': {
+      id: '/gioi-thieu'
+      path: '/gioi-thieu'
+      fullPath: '/gioi-thieu'
+      preLoaderRoute: typeof GioiThieuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -82,11 +145,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KhuVucSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dia-diem/$slug': {
+      id: '/dia-diem/$slug'
+      path: '/dia-diem/$slug'
+      fullPath: '/dia-diem/$slug'
+      preLoaderRoute: typeof DiaDiemSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GioiThieuRoute: GioiThieuRoute,
+  HuongDanRoute: HuongDanRoute,
+  DiaDiemSlugRoute: DiaDiemSlugRoute,
   KhuVucSlugRoute: KhuVucSlugRoute,
   DiaDiemIndexRoute: DiaDiemIndexRoute,
 }
