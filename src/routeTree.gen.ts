@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DiaDiemIndexRouteImport } from './routes/dia-diem.index'
+import { Route as KhuVucSlugRouteImport } from './routes/khu-vuc.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiaDiemIndexRoute = DiaDiemIndexRouteImport.update({
+  id: '/dia-diem/',
+  path: '/dia-diem/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KhuVucSlugRoute = KhuVucSlugRouteImport.update({
+  id: '/khu-vuc/$slug',
+  path: '/khu-vuc/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/khu-vuc/$slug': typeof KhuVucSlugRoute
+  '/dia-diem/': typeof DiaDiemIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/khu-vuc/$slug': typeof KhuVucSlugRoute
+  '/dia-diem': typeof DiaDiemIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/khu-vuc/$slug': typeof KhuVucSlugRoute
+  '/dia-diem/': typeof DiaDiemIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/khu-vuc/$slug' | '/dia-diem/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/khu-vuc/$slug' | '/dia-diem'
+  id: '__root__' | '/' | '/khu-vuc/$slug' | '/dia-diem/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KhuVucSlugRoute: typeof KhuVucSlugRoute
+  DiaDiemIndexRoute: typeof DiaDiemIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dia-diem/': {
+      id: '/dia-diem/'
+      path: '/dia-diem'
+      fullPath: '/dia-diem/'
+      preLoaderRoute: typeof DiaDiemIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/khu-vuc/$slug': {
+      id: '/khu-vuc/$slug'
+      path: '/khu-vuc/$slug'
+      fullPath: '/khu-vuc/$slug'
+      preLoaderRoute: typeof KhuVucSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KhuVucSlugRoute: KhuVucSlugRoute,
+  DiaDiemIndexRoute: DiaDiemIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
