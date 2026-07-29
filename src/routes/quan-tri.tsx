@@ -265,7 +265,6 @@ const TEXT_FIELDS = [
   ["visit_time", "Thời gian tham quan"],
   ["ticket_price", "Giá vé"],
   ["contact", "Thông tin liên hệ"],
-  ["video_url", "Đường dẫn video (YouTube/Vimeo hoặc tệp)"],
   ["map_embed_url", "Google Maps embed URL (tuỳ chọn)"],
 ] as const;
 
