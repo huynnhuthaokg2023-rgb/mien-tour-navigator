@@ -265,7 +265,6 @@ const TEXT_FIELDS = [
   ["visit_time", "Thời gian tham quan"],
   ["ticket_price", "Giá vé"],
   ["contact", "Thông tin liên hệ"],
-  ["video_url", "Đường dẫn video (YouTube/Vimeo hoặc tệp)"],
   ["map_embed_url", "Google Maps embed URL (tuỳ chọn)"],
 ] as const;
 
@@ -314,13 +313,40 @@ function LocationEditor({ id, onBack }: { id: string; onBack: () => void }) {
     await qc.invalidateQueries();
   };
 
-  const upload = async (file: File, folder: string, apply: (url: string) => void) => {
+  /** Ghi ngay thay đổi media vào CSDL để tệp gắn đúng với địa điểm. */
+  const persistMedia = async (patch: Partial<TourLocation>) => {
+    set(patch);
+    const { error } = await supabase.from("locations").update(patch).eq("id", id);
+    if (error) throw error;
+    await qc.invalidateQueries();
+  };
+
+  const uploadMediaField = async (
+    file: File,
+    folder: string,
+    field: "cover_image_url" | "video_url" | "audio_vi_url" | "audio_en_url",
+  ) => {
     setBusy(true);
     try {
-      apply(await uploadMedia(folder, file));
-      toast.success("Đã tải tệp lên.");
+      const url = await uploadMedia(folder, file);
+      await persistMedia({ [field]: url } as Partial<TourLocation>);
+      toast.success("Đã tải tệp lên và lưu vào địa điểm.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Tải tệp thất bại");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const clearMediaField = async (
+    field: "cover_image_url" | "video_url" | "audio_vi_url" | "audio_en_url",
+  ) => {
+    setBusy(true);
+    try {
+      await persistMedia({ [field]: null } as Partial<TourLocation>);
+      toast.success("Đã xoá tệp.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Xoá tệp thất bại");
     } finally {
       setBusy(false);
     }
@@ -417,34 +443,68 @@ function LocationEditor({ id, onBack }: { id: string; onBack: () => void }) {
           label="Ảnh đại diện"
           accept="image/*"
           current={form.cover_image_url}
-          onFile={(f) => upload(f, `covers/${id}`, (url) => set({ cover_image_url: url }))}
-          onClear={() => set({ cover_image_url: null })}
-        />
-        <FileField
-          label="Audio Guide 🇻🇳 Tiếng Việt (MP3/WAV)"
-          accept="audio/mpeg,audio/wav,audio/*"
-          current={form.audio_vi_url}
-          onFile={(f) => upload(f, `audio/${id}`, (url) => set({ audio_vi_url: url }))}
-          onClear={() => set({ audio_vi_url: null })}
-        />
-        <FileField
-          label="Audio Guide 🇬🇧 English (MP3/WAV)"
-          accept="audio/mpeg,audio/wav,audio/*"
-          current={form.audio_en_url}
-          onFile={(f) => upload(f, `audio/${id}`, (url) => set({ audio_en_url: url }))}
-          onClear={() => set({ audio_en_url: null })}
-        />
-        <FileField
-          label="Tải video lên (tuỳ chọn)"
-          accept="video/*"
-          current={null}
-          onFile={(f) => upload(f, `video/${id}`, (url) => set({ video_url: url }))}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `covers/${id}`, "cover_image_url")}
+          onClear={() => clearMediaField("cover_image_url")}
         />
 
         <Button onClick={save} disabled={busy} className="h-13 w-full rounded-2xl text-base font-bold">
           LƯU THAY ĐỔI
         </Button>
       </div>
+
+      <section className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
+        <h3 className="font-extrabold text-primary">🎥 VIDEO MINH HOẠ</h3>
+        <p className="text-xs text-muted-foreground">
+          Tải trực tiếp tệp video từ máy tính (MP4/WebM/MOV). Không cần nhập đường dẫn.
+        </p>
+        {form.video_url && (
+          <video
+            src={form.video_url}
+            controls
+            preload="metadata"
+            className="w-full rounded-2xl"
+          />
+        )}
+        <FileField
+          label={form.video_url ? "Thay video khác" : "Chọn tệp video"}
+          accept="video/mp4,video/webm,video/quicktime,video/*"
+          current={form.video_url}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `video/${id}`, "video_url")}
+          onClear={() => clearMediaField("video_url")}
+        />
+      </section>
+
+      <section className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
+        <h3 className="font-extrabold text-primary">🇻🇳 AUDIO GUIDE – TIẾNG VIỆT</h3>
+        {form.audio_vi_url && (
+          <audio src={form.audio_vi_url} controls preload="metadata" className="w-full" />
+        )}
+        <FileField
+          label={form.audio_vi_url ? "Thay tệp audio tiếng Việt" : "Chọn tệp MP3/WAV"}
+          accept="audio/mpeg,audio/wav,audio/*"
+          current={form.audio_vi_url}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `audio-vi/${id}`, "audio_vi_url")}
+          onClear={() => clearMediaField("audio_vi_url")}
+        />
+      </section>
+
+      <section className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
+        <h3 className="font-extrabold text-primary">🇬🇧 AUDIO GUIDE – ENGLISH</h3>
+        {form.audio_en_url && (
+          <audio src={form.audio_en_url} controls preload="metadata" className="w-full" />
+        )}
+        <FileField
+          label={form.audio_en_url ? "Thay tệp audio tiếng Anh" : "Chọn tệp MP3/WAV"}
+          accept="audio/mpeg,audio/wav,audio/*"
+          current={form.audio_en_url}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `audio-en/${id}`, "audio_en_url")}
+          onClear={() => clearMediaField("audio_en_url")}
+        />
+      </section>
 
       <div className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
         <h3 className="font-extrabold text-primary">Thư viện hình ảnh</h3>
@@ -499,12 +559,14 @@ function FileField({
   label,
   accept,
   current,
+  busy,
   onFile,
   onClear,
 }: {
   label: string;
   accept: string;
   current: string | null;
+  busy?: boolean;
   onFile: (file: File) => void;
   onClear?: () => void;
 }) {
@@ -514,18 +576,25 @@ function FileField({
       <Input
         type="file"
         accept={accept}
+        disabled={busy}
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) onFile(f);
+          e.target.value = "";
         }}
         className="mt-1 rounded-2xl"
       />
       {current && (
         <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="truncate">Đã có tệp</span>
+          <span className="truncate">Đã có tệp trong hệ thống lưu trữ</span>
           {onClear && (
-            <button onClick={onClear} className="font-semibold text-destructive">
-              Xoá
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onClear}
+              className="font-semibold text-destructive"
+            >
+              Xoá tệp
             </button>
           )}
         </div>
@@ -533,3 +602,4 @@ function FileField({
     </div>
   );
 }
+

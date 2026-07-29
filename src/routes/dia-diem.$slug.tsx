@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ChevronRight, Clock, Compass, Info, MapPin, Navigation, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AudioGuide } from "@/components/audio-guide";
+import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import {
   directionsUrl,
@@ -174,7 +174,7 @@ function LocationPage() {
           <ImageGallery images={images.data ?? []} />
         </Section>
 
-        <Section title="VIDEO">
+        <Section title="🎥 VIDEO MINH HOẠ">
           {videoSrc ? (
             <div className="overflow-hidden rounded-3xl shadow-elevated">
               <iframe
@@ -186,7 +186,13 @@ function LocationPage() {
               />
             </div>
           ) : loc.video_url ? (
-            <video src={loc.video_url} controls className="w-full rounded-3xl shadow-elevated" />
+            <video
+              src={loc.video_url}
+              controls
+              preload="metadata"
+              playsInline
+              className="w-full rounded-3xl shadow-elevated"
+            />
           ) : (
             <p className="rounded-3xl border border-dashed border-border bg-secondary/50 p-6 text-center text-sm text-muted-foreground">
               Video đang được cập nhật.
@@ -194,9 +200,26 @@ function LocationPage() {
           )}
         </Section>
 
-        <Section title="AUDIO GUIDE – THUYẾT MINH">
-          <AudioGuide vi={loc.audio_vi_url} en={loc.audio_en_url} />
-        </Section>
+        {(loc.audio_vi_url || loc.audio_en_url) && (
+          <Section title="🎧 AUDIO GUIDE – THUYẾT MINH">
+            <div className="space-y-4">
+              {loc.audio_vi_url && (
+                <AudioPlayer
+                  url={loc.audio_vi_url}
+                  flag="🇻🇳"
+                  title="THUYẾT MINH TIẾNG VIỆT"
+                />
+              )}
+              {loc.audio_en_url && (
+                <AudioPlayer
+                  url={loc.audio_en_url}
+                  flag="🇬🇧"
+                  title="ENGLISH AUDIO GUIDE"
+                />
+              )}
+            </div>
+          </Section>
+        )}
 
         <Section title="VỊ TRÍ TRÊN BẢN ĐỒ">
           {mapSrc ? (
