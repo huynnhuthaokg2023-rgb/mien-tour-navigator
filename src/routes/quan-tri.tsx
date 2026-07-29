@@ -313,13 +313,40 @@ function LocationEditor({ id, onBack }: { id: string; onBack: () => void }) {
     await qc.invalidateQueries();
   };
 
-  const upload = async (file: File, folder: string, apply: (url: string) => void) => {
+  /** Ghi ngay thay đổi media vào CSDL để tệp gắn đúng với địa điểm. */
+  const persistMedia = async (patch: Partial<TourLocation>) => {
+    set(patch);
+    const { error } = await supabase.from("locations").update(patch).eq("id", id);
+    if (error) throw error;
+    await qc.invalidateQueries();
+  };
+
+  const uploadMediaField = async (
+    file: File,
+    folder: string,
+    field: "cover_image_url" | "video_url" | "audio_vi_url" | "audio_en_url",
+  ) => {
     setBusy(true);
     try {
-      apply(await uploadMedia(folder, file));
-      toast.success("Đã tải tệp lên.");
+      const url = await uploadMedia(folder, file);
+      await persistMedia({ [field]: url } as Partial<TourLocation>);
+      toast.success("Đã tải tệp lên và lưu vào địa điểm.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Tải tệp thất bại");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const clearMediaField = async (
+    field: "cover_image_url" | "video_url" | "audio_vi_url" | "audio_en_url",
+  ) => {
+    setBusy(true);
+    try {
+      await persistMedia({ [field]: null } as Partial<TourLocation>);
+      toast.success("Đã xoá tệp.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Xoá tệp thất bại");
     } finally {
       setBusy(false);
     }
