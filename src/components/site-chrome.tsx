@@ -20,8 +20,13 @@ export function SiteHeader() {
           <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-brand text-primary-foreground">
             <Compass className="size-5" aria-hidden />
           </span>
-          <span className="truncate text-lg font-extrabold tracking-tight text-primary">
-            MIỀN TOUR
+          <span className="min-w-0">
+            <span className="block truncate text-lg font-extrabold tracking-tight text-primary">
+              MIỀN TOUR
+            </span>
+            <span className="hidden truncate text-[11px] font-medium italic tracking-wide text-muted-foreground sm:block">
+              Chân chạm đất bằng, hồn chạm văn hoá
+            </span>
           </span>
         </Link>
 
