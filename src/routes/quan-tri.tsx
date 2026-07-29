@@ -559,12 +559,14 @@ function FileField({
   label,
   accept,
   current,
+  busy,
   onFile,
   onClear,
 }: {
   label: string;
   accept: string;
   current: string | null;
+  busy?: boolean;
   onFile: (file: File) => void;
   onClear?: () => void;
 }) {
@@ -574,18 +576,25 @@ function FileField({
       <Input
         type="file"
         accept={accept}
+        disabled={busy}
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) onFile(f);
+          e.target.value = "";
         }}
         className="mt-1 rounded-2xl"
       />
       {current && (
         <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="truncate">Đã có tệp</span>
+          <span className="truncate">Đã có tệp trong hệ thống lưu trữ</span>
           {onClear && (
-            <button onClick={onClear} className="font-semibold text-destructive">
-              Xoá
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onClear}
+              className="font-semibold text-destructive"
+            >
+              Xoá tệp
             </button>
           )}
         </div>
@@ -593,3 +602,4 @@ function FileField({
     </div>
   );
 }
+
