@@ -443,34 +443,68 @@ function LocationEditor({ id, onBack }: { id: string; onBack: () => void }) {
           label="Ảnh đại diện"
           accept="image/*"
           current={form.cover_image_url}
-          onFile={(f) => upload(f, `covers/${id}`, (url) => set({ cover_image_url: url }))}
-          onClear={() => set({ cover_image_url: null })}
-        />
-        <FileField
-          label="Audio Guide 🇻🇳 Tiếng Việt (MP3/WAV)"
-          accept="audio/mpeg,audio/wav,audio/*"
-          current={form.audio_vi_url}
-          onFile={(f) => upload(f, `audio/${id}`, (url) => set({ audio_vi_url: url }))}
-          onClear={() => set({ audio_vi_url: null })}
-        />
-        <FileField
-          label="Audio Guide 🇬🇧 English (MP3/WAV)"
-          accept="audio/mpeg,audio/wav,audio/*"
-          current={form.audio_en_url}
-          onFile={(f) => upload(f, `audio/${id}`, (url) => set({ audio_en_url: url }))}
-          onClear={() => set({ audio_en_url: null })}
-        />
-        <FileField
-          label="Tải video lên (tuỳ chọn)"
-          accept="video/*"
-          current={null}
-          onFile={(f) => upload(f, `video/${id}`, (url) => set({ video_url: url }))}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `covers/${id}`, "cover_image_url")}
+          onClear={() => clearMediaField("cover_image_url")}
         />
 
         <Button onClick={save} disabled={busy} className="h-13 w-full rounded-2xl text-base font-bold">
           LƯU THAY ĐỔI
         </Button>
       </div>
+
+      <section className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
+        <h3 className="font-extrabold text-primary">🎥 VIDEO MINH HOẠ</h3>
+        <p className="text-xs text-muted-foreground">
+          Tải trực tiếp tệp video từ máy tính (MP4/WebM/MOV). Không cần nhập đường dẫn.
+        </p>
+        {form.video_url && (
+          <video
+            src={form.video_url}
+            controls
+            preload="metadata"
+            className="w-full rounded-2xl"
+          />
+        )}
+        <FileField
+          label={form.video_url ? "Thay video khác" : "Chọn tệp video"}
+          accept="video/mp4,video/webm,video/quicktime,video/*"
+          current={form.video_url}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `video/${id}`, "video_url")}
+          onClear={() => clearMediaField("video_url")}
+        />
+      </section>
+
+      <section className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
+        <h3 className="font-extrabold text-primary">🇻🇳 AUDIO GUIDE – TIẾNG VIỆT</h3>
+        {form.audio_vi_url && (
+          <audio src={form.audio_vi_url} controls preload="metadata" className="w-full" />
+        )}
+        <FileField
+          label={form.audio_vi_url ? "Thay tệp audio tiếng Việt" : "Chọn tệp MP3/WAV"}
+          accept="audio/mpeg,audio/wav,audio/*"
+          current={form.audio_vi_url}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `audio-vi/${id}`, "audio_vi_url")}
+          onClear={() => clearMediaField("audio_vi_url")}
+        />
+      </section>
+
+      <section className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
+        <h3 className="font-extrabold text-primary">🇬🇧 AUDIO GUIDE – ENGLISH</h3>
+        {form.audio_en_url && (
+          <audio src={form.audio_en_url} controls preload="metadata" className="w-full" />
+        )}
+        <FileField
+          label={form.audio_en_url ? "Thay tệp audio tiếng Anh" : "Chọn tệp MP3/WAV"}
+          accept="audio/mpeg,audio/wav,audio/*"
+          current={form.audio_en_url}
+          busy={busy}
+          onFile={(f) => uploadMediaField(f, `audio-en/${id}`, "audio_en_url")}
+          onClear={() => clearMediaField("audio_en_url")}
+        />
+      </section>
 
       <div className="space-y-3 rounded-3xl bg-card p-5 shadow-elevated">
         <h3 className="font-extrabold text-primary">Thư viện hình ảnh</h3>
