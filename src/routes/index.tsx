@@ -61,9 +61,10 @@ function HomePage() {
           <span className="inline-flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1.5 text-xs font-bold text-primary">
             <Sparkles className="size-3.5" aria-hidden /> MIỀN TOUR
           </span>
-          <p className="mt-4 max-w-xl border-l-2 border-background/70 pl-3 text-base font-semibold italic tracking-wide text-background sm:text-xl">
-            “Chân chạm đất bằng, hồn chạm văn hoá”
+          <p className="animate-fade-in mt-4 max-w-xl border-l-2 border-gold pl-3 text-lg font-semibold tracking-wide text-gold italic sm:text-2xl">
+            “Chân chạm đất bằng, hồn chạm văn hoá.”
           </p>
+
           <h1 className="mt-3 max-w-2xl text-4xl leading-[1.1] font-extrabold text-background sm:text-6xl">
             Khám phá điểm đến tiếp theo của bạn
           </h1>
