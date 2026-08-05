@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import type { LocationImage } from "@/lib/mien-tour";
 
-export function ImageGallery({ images }: { images: LocationImage[] }) {
+type GalleryImage = { id: string; url: string; caption: string };
+
+export function ImageGallery({ images }: { images: GalleryImage[] }) {
+
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   if (images.length === 0) {
