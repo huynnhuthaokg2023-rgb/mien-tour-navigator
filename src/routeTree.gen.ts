@@ -15,6 +15,7 @@ import { Route as GioiThieuRouteImport } from './routes/gioi-thieu'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TourIndexRouteImport } from './routes/tour.index'
 import { Route as DiaDiemIndexRouteImport } from './routes/dia-diem.index'
+import { Route as TourSlugRouteImport } from './routes/tour.$slug'
 import { Route as KhuVucSlugRouteImport } from './routes/khu-vuc.$slug'
 import { Route as DiaDiemSlugRouteImport } from './routes/dia-diem.$slug'
 
@@ -48,6 +49,11 @@ const DiaDiemIndexRoute = DiaDiemIndexRouteImport.update({
   path: '/dia-diem/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TourSlugRoute = TourSlugRouteImport.update({
+  id: '/tour/$slug',
+  path: '/tour/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KhuVucSlugRoute = KhuVucSlugRouteImport.update({
   id: '/khu-vuc/$slug',
   path: '/khu-vuc/$slug',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/quan-tri': typeof QuanTriRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
+  '/tour/$slug': typeof TourSlugRoute
   '/dia-diem/': typeof DiaDiemIndexRoute
   '/tour/': typeof TourIndexRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/quan-tri': typeof QuanTriRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
+  '/tour/$slug': typeof TourSlugRoute
   '/dia-diem': typeof DiaDiemIndexRoute
   '/tour': typeof TourIndexRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/quan-tri': typeof QuanTriRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
+  '/tour/$slug': typeof TourSlugRoute
   '/dia-diem/': typeof DiaDiemIndexRoute
   '/tour/': typeof TourIndexRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/quan-tri'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
+    | '/tour/$slug'
     | '/dia-diem/'
     | '/tour/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/quan-tri'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
+    | '/tour/$slug'
     | '/dia-diem'
     | '/tour'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/quan-tri'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
+    | '/tour/$slug'
     | '/dia-diem/'
     | '/tour/'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   QuanTriRoute: typeof QuanTriRoute
   DiaDiemSlugRoute: typeof DiaDiemSlugRoute
   KhuVucSlugRoute: typeof KhuVucSlugRoute
+  TourSlugRoute: typeof TourSlugRoute
   DiaDiemIndexRoute: typeof DiaDiemIndexRoute
   TourIndexRoute: typeof TourIndexRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiaDiemIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tour/$slug': {
+      id: '/tour/$slug'
+      path: '/tour/$slug'
+      fullPath: '/tour/$slug'
+      preLoaderRoute: typeof TourSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/khu-vuc/$slug': {
       id: '/khu-vuc/$slug'
       path: '/khu-vuc/$slug'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuanTriRoute: QuanTriRoute,
   DiaDiemSlugRoute: DiaDiemSlugRoute,
   KhuVucSlugRoute: KhuVucSlugRoute,
+  TourSlugRoute: TourSlugRoute,
   DiaDiemIndexRoute: DiaDiemIndexRoute,
   TourIndexRoute: TourIndexRoute,
 }
