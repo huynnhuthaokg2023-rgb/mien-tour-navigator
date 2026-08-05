@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ThueXeRouteImport } from './routes/thue-xe'
 import { Route as QuanTriRouteImport } from './routes/quan-tri'
 import { Route as HuongDanRouteImport } from './routes/huong-dan'
 import { Route as GioiThieuRouteImport } from './routes/gioi-thieu'
@@ -19,6 +20,11 @@ import { Route as TourSlugRouteImport } from './routes/tour.$slug'
 import { Route as KhuVucSlugRouteImport } from './routes/khu-vuc.$slug'
 import { Route as DiaDiemSlugRouteImport } from './routes/dia-diem.$slug'
 
+const ThueXeRoute = ThueXeRouteImport.update({
+  id: '/thue-xe',
+  path: '/thue-xe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuanTriRoute = QuanTriRouteImport.update({
   id: '/quan-tri',
   path: '/quan-tri',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/gioi-thieu': typeof GioiThieuRoute
   '/huong-dan': typeof HuongDanRoute
   '/quan-tri': typeof QuanTriRoute
+  '/thue-xe': typeof ThueXeRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
   '/tour/$slug': typeof TourSlugRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/gioi-thieu': typeof GioiThieuRoute
   '/huong-dan': typeof HuongDanRoute
   '/quan-tri': typeof QuanTriRoute
+  '/thue-xe': typeof ThueXeRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
   '/tour/$slug': typeof TourSlugRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/gioi-thieu': typeof GioiThieuRoute
   '/huong-dan': typeof HuongDanRoute
   '/quan-tri': typeof QuanTriRoute
+  '/thue-xe': typeof ThueXeRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
   '/tour/$slug': typeof TourSlugRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/gioi-thieu'
     | '/huong-dan'
     | '/quan-tri'
+    | '/thue-xe'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
     | '/tour/$slug'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/gioi-thieu'
     | '/huong-dan'
     | '/quan-tri'
+    | '/thue-xe'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
     | '/tour/$slug'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/gioi-thieu'
     | '/huong-dan'
     | '/quan-tri'
+    | '/thue-xe'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
     | '/tour/$slug'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   GioiThieuRoute: typeof GioiThieuRoute
   HuongDanRoute: typeof HuongDanRoute
   QuanTriRoute: typeof QuanTriRoute
+  ThueXeRoute: typeof ThueXeRoute
   DiaDiemSlugRoute: typeof DiaDiemSlugRoute
   KhuVucSlugRoute: typeof KhuVucSlugRoute
   TourSlugRoute: typeof TourSlugRoute
@@ -149,6 +162,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/thue-xe': {
+      id: '/thue-xe'
+      path: '/thue-xe'
+      fullPath: '/thue-xe'
+      preLoaderRoute: typeof ThueXeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quan-tri': {
       id: '/quan-tri'
       path: '/quan-tri'
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   GioiThieuRoute: GioiThieuRoute,
   HuongDanRoute: HuongDanRoute,
   QuanTriRoute: QuanTriRoute,
+  ThueXeRoute: ThueXeRoute,
   DiaDiemSlugRoute: DiaDiemSlugRoute,
   KhuVucSlugRoute: KhuVucSlugRoute,
   TourSlugRoute: TourSlugRoute,
