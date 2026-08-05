@@ -56,7 +56,7 @@ export function SiteHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-label="Mở menu"
           aria-expanded={open}
-          className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary md:hidden"
+          className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary lg:hidden"
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
@@ -64,7 +64,7 @@ export function SiteHeader() {
 
       <div
         className={cn(
-          "overflow-hidden border-t border-border/70 bg-background md:hidden",
+          "overflow-hidden border-t border-border/70 bg-background lg:hidden",
           open ? "block" : "hidden",
         )}
       >
