@@ -14,6 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
+      events: {
+        Row: {
+          cover_image_url: string | null
+          created_at: string
+          description: string
+          end_date: string | null
+          id: string
+          place: string
+          published: boolean
+          slug: string
+          sort_order: number
+          start_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string
+          end_date?: string | null
+          id?: string
+          place?: string
+          published?: boolean
+          slug: string
+          sort_order?: number
+          start_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string
+          end_date?: string | null
+          id?: string
+          place?: string
+          published?: boolean
+          slug?: string
+          sort_order?: number
+          start_date?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      guides: {
+        Row: {
+          bio: string
+          certificate_url: string | null
+          created_at: string
+          email: string
+          experience: string
+          full_name: string
+          id: string
+          languages: string[]
+          phone: string
+          photo_url: string | null
+          price_note: string
+          published: boolean
+          rating: number
+          service_area: string
+          sort_order: number
+          updated_at: string
+          zalo: string
+        }
+        Insert: {
+          bio?: string
+          certificate_url?: string | null
+          created_at?: string
+          email?: string
+          experience?: string
+          full_name: string
+          id?: string
+          languages?: string[]
+          phone?: string
+          photo_url?: string | null
+          price_note?: string
+          published?: boolean
+          rating?: number
+          service_area?: string
+          sort_order?: number
+          updated_at?: string
+          zalo?: string
+        }
+        Update: {
+          bio?: string
+          certificate_url?: string | null
+          created_at?: string
+          email?: string
+          experience?: string
+          full_name?: string
+          id?: string
+          languages?: string[]
+          phone?: string
+          photo_url?: string | null
+          price_note?: string
+          published?: boolean
+          rating?: number
+          service_area?: string
+          sort_order?: number
+          updated_at?: string
+          zalo?: string
+        }
+        Relationships: []
+      }
       location_images: {
         Row: {
           caption: string
@@ -183,6 +288,194 @@ export type Database = {
         }
         Relationships: []
       }
+      service_bookings: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          guests: number
+          guide_id: string | null
+          id: string
+          note: string
+          partner_id: string | null
+          phone: string
+          pickup: string
+          service_type: string
+          status: string
+          tour_id: string | null
+          travel_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string
+          full_name: string
+          guests?: number
+          guide_id?: string | null
+          id?: string
+          note?: string
+          partner_id?: string | null
+          phone: string
+          pickup?: string
+          service_type?: string
+          status?: string
+          tour_id?: string | null
+          travel_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          guests?: number
+          guide_id?: string | null
+          id?: string
+          note?: string
+          partner_id?: string | null
+          phone?: string
+          pickup?: string
+          service_type?: string
+          status?: string
+          tour_id?: string | null
+          travel_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_bookings_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "guides"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_bookings_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_bookings_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tour_images: {
+        Row: {
+          caption: string
+          created_at: string
+          id: string
+          sort_order: number
+          tour_id: string
+          url: string
+        }
+        Insert: {
+          caption?: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          tour_id: string
+          url: string
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          tour_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_images_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tours: {
+        Row: {
+          audio_en_url: string | null
+          audio_vi_url: string | null
+          cover_image_url: string | null
+          created_at: string
+          distance_km: number
+          duration_label: string
+          duration_minutes: number
+          id: string
+          itinerary: string
+          location_id: string | null
+          map_embed_url: string | null
+          name: string
+          price_note: string
+          published: boolean
+          slug: string
+          sort_order: number
+          summary: string
+          transport: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          audio_en_url?: string | null
+          audio_vi_url?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          distance_km?: number
+          duration_label?: string
+          duration_minutes?: number
+          id?: string
+          itinerary?: string
+          location_id?: string | null
+          map_embed_url?: string | null
+          name: string
+          price_note?: string
+          published?: boolean
+          slug: string
+          sort_order?: number
+          summary?: string
+          transport?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          audio_en_url?: string | null
+          audio_vi_url?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          distance_km?: number
+          duration_label?: string
+          duration_minutes?: number
+          id?: string
+          itinerary?: string
+          location_id?: string | null
+          map_embed_url?: string | null
+          name?: string
+          price_note?: string
+          published?: boolean
+          slug?: string
+          sort_order?: number
+          summary?: string
+          transport?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tours_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -201,6 +494,72 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      vehicle_partners: {
+        Row: {
+          created_at: string
+          description: string
+          email: string
+          facebook: string
+          id: string
+          license_url: string | null
+          logo_url: string | null
+          name: string
+          phone: string
+          price_list_url: string | null
+          price_note: string
+          published: boolean
+          service_area: string
+          sort_order: number
+          updated_at: string
+          vehicle_image_url: string | null
+          vehicle_types: string[]
+          website: string
+          zalo: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          email?: string
+          facebook?: string
+          id?: string
+          license_url?: string | null
+          logo_url?: string | null
+          name: string
+          phone?: string
+          price_list_url?: string | null
+          price_note?: string
+          published?: boolean
+          service_area?: string
+          sort_order?: number
+          updated_at?: string
+          vehicle_image_url?: string | null
+          vehicle_types?: string[]
+          website?: string
+          zalo?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          email?: string
+          facebook?: string
+          id?: string
+          license_url?: string | null
+          logo_url?: string | null
+          name?: string
+          phone?: string
+          price_list_url?: string | null
+          price_note?: string
+          published?: boolean
+          service_area?: string
+          sort_order?: number
+          updated_at?: string
+          vehicle_image_url?: string | null
+          vehicle_types?: string[]
+          website?: string
+          zalo?: string
         }
         Relationships: []
       }
