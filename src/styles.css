@@ -107,6 +107,7 @@
   --gradient-brand: linear-gradient(135deg, var(--primary) 0%, var(--primary-soft) 100%);
   --shadow-card: 0 1px 2px oklch(0.24 0.03 150 / 6%), 0 12px 28px -14px oklch(0.24 0.03 150 / 22%);
   --shadow-float: 0 18px 44px -18px oklch(0.24 0.03 150 / 32%);
+  --gold: oklch(0.72 0.13 82);
   --font-display:
     "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -140,9 +141,11 @@
   --sidebar-accent-foreground: oklch(0.97 0.01 140);
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: oklch(0.72 0.13 150);
+  --gold: oklch(0.82 0.13 85);
 }
 
 @theme inline {
+  --color-gold: var(--gold);
   --color-primary-soft: var(--primary-soft);
   --font-sans: var(--font-display);
   --shadow-card: var(--shadow-card);
@@ -203,3 +206,26 @@
   animation: mt-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+
+@keyframes mt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-fade-in {
+  animation: mt-fade-in 1s ease-out 0.15s both;
+}
+
+@utility text-gold {
+  color: var(--gold);
+}
+
+@utility bg-gold-soft {
+  background-color: color-mix(in oklab, var(--gold) 16%, transparent);
+}
