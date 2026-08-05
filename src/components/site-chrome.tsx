@@ -93,12 +93,15 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-2">
         <div>
           <p className="text-lg font-extrabold text-primary">MIỀN TOUR</p>
+          <p className="animate-fade-in mt-1 text-sm font-semibold text-gold italic">
+            {SLOGAN}
+          </p>
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">
             Nền tảng khám phá du lịch địa phương: thông tin, hình ảnh, video, thuyết minh
             đa ngôn ngữ và bản đồ chỉ đường.
           </p>
         </div>
-        <div className="flex flex-col gap-2 text-sm sm:items-end">
+        <div className="grid grid-cols-2 gap-2 text-sm sm:justify-items-end">
           {nav.map((item) => (
             <Link
               key={item.to}
