@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThueXeRouteImport } from './routes/thue-xe'
 import { Route as QuanTriRouteImport } from './routes/quan-tri'
+import { Route as HuongDanVienRouteImport } from './routes/huong-dan-vien'
 import { Route as HuongDanRouteImport } from './routes/huong-dan'
 import { Route as GioiThieuRouteImport } from './routes/gioi-thieu'
 import { Route as IndexRouteImport } from './routes/index'
@@ -28,6 +29,11 @@ const ThueXeRoute = ThueXeRouteImport.update({
 const QuanTriRoute = QuanTriRouteImport.update({
   id: '/quan-tri',
   path: '/quan-tri',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HuongDanVienRoute = HuongDanVienRouteImport.update({
+  id: '/huong-dan-vien',
+  path: '/huong-dan-vien',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HuongDanRoute = HuongDanRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/gioi-thieu': typeof GioiThieuRoute
   '/huong-dan': typeof HuongDanRoute
+  '/huong-dan-vien': typeof HuongDanVienRoute
   '/quan-tri': typeof QuanTriRoute
   '/thue-xe': typeof ThueXeRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/gioi-thieu': typeof GioiThieuRoute
   '/huong-dan': typeof HuongDanRoute
+  '/huong-dan-vien': typeof HuongDanVienRoute
   '/quan-tri': typeof QuanTriRoute
   '/thue-xe': typeof ThueXeRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/gioi-thieu': typeof GioiThieuRoute
   '/huong-dan': typeof HuongDanRoute
+  '/huong-dan-vien': typeof HuongDanVienRoute
   '/quan-tri': typeof QuanTriRoute
   '/thue-xe': typeof ThueXeRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/gioi-thieu'
     | '/huong-dan'
+    | '/huong-dan-vien'
     | '/quan-tri'
     | '/thue-xe'
     | '/dia-diem/$slug'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/gioi-thieu'
     | '/huong-dan'
+    | '/huong-dan-vien'
     | '/quan-tri'
     | '/thue-xe'
     | '/dia-diem/$slug'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/gioi-thieu'
     | '/huong-dan'
+    | '/huong-dan-vien'
     | '/quan-tri'
     | '/thue-xe'
     | '/dia-diem/$slug'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GioiThieuRoute: typeof GioiThieuRoute
   HuongDanRoute: typeof HuongDanRoute
+  HuongDanVienRoute: typeof HuongDanVienRoute
   QuanTriRoute: typeof QuanTriRoute
   ThueXeRoute: typeof ThueXeRoute
   DiaDiemSlugRoute: typeof DiaDiemSlugRoute
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/quan-tri'
       fullPath: '/quan-tri'
       preLoaderRoute: typeof QuanTriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/huong-dan-vien': {
+      id: '/huong-dan-vien'
+      path: '/huong-dan-vien'
+      fullPath: '/huong-dan-vien'
+      preLoaderRoute: typeof HuongDanVienRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/huong-dan': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GioiThieuRoute: GioiThieuRoute,
   HuongDanRoute: HuongDanRoute,
+  HuongDanVienRoute: HuongDanVienRoute,
   QuanTriRoute: QuanTriRoute,
   ThueXeRoute: ThueXeRoute,
   DiaDiemSlugRoute: DiaDiemSlugRoute,
