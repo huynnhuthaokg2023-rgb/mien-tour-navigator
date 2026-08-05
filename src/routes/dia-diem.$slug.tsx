@@ -4,7 +4,7 @@ import { ArrowLeft, ChevronRight, Clock, Compass, Heart, Info, MapPin, Navigatio
 import { Button } from "@/components/ui/button";
 import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
-import { TourCard } from "@/routes/tour.index";
+import { TourCard } from "@/components/tour-card";
 import { useFavorites } from "@/hooks/use-favorites";
 import { fetchTours } from "@/lib/services";
 import {
