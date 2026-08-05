@@ -1,9 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, ChevronRight, Clock, Compass, Info, MapPin, Navigation, Ticket } from "lucide-react";
+import { ArrowLeft, ChevronRight, Clock, Compass, Heart, Info, MapPin, Navigation, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
+import { TourCard } from "@/routes/tour.index";
+import { useFavorites } from "@/hooks/use-favorites";
+import { fetchTours } from "@/lib/services";
 import {
   directionsUrl,
   embedVideoSrc,
@@ -13,6 +16,7 @@ import {
   mapsEmbedSrc,
 } from "@/lib/mien-tour";
 import { coverFor } from "@/lib/images";
+
 
 export const Route = createFileRoute("/dia-diem/$slug")({
   head: () => ({
