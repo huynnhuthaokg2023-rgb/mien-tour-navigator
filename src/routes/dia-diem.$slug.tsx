@@ -55,6 +55,12 @@ function LocationPage() {
     enabled: Boolean(location.data?.id),
   });
   const regions = useQuery({ queryKey: ["regions"], queryFn: () => fetchRegions() });
+  const tours = useQuery({
+    queryKey: ["tours", location.data?.id],
+    queryFn: () => fetchTours(location.data!.id),
+    enabled: Boolean(location.data?.id),
+  });
+  const favorites = useFavorites();
 
   if (location.isLoading) {
     return <div className="mx-auto h-96 max-w-3xl animate-pulse rounded-3xl bg-secondary" />;
@@ -99,9 +105,23 @@ function LocationPage() {
             )}
             <span className="truncate">{loc.name.toUpperCase()}</span>
           </nav>
-          <h1 className="mt-2 text-2xl font-extrabold text-background sm:text-4xl">
-            {loc.name}
-          </h1>
+          <div className="mt-2 flex items-start justify-between gap-3">
+            <h1 className="text-2xl font-extrabold text-background sm:text-4xl">{loc.name}</h1>
+            <button
+              onClick={() => favorites.toggle(loc.slug)}
+              aria-label={
+                favorites.has(loc.slug) ? "Bỏ khỏi yêu thích" : "Lưu vào yêu thích"
+              }
+              aria-pressed={favorites.has(loc.slug)}
+              className="grid size-11 shrink-0 place-items-center rounded-2xl bg-background/90 text-primary"
+            >
+              <Heart
+                className={
+                  favorites.has(loc.slug) ? "size-5 fill-destructive text-destructive" : "size-5"
+                }
+              />
+            </button>
+          </div>
           {loc.address && (
             <p className="mt-1 flex items-start gap-1.5 text-sm text-background/90">
               <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden /> {loc.address}
@@ -171,6 +191,16 @@ function LocationPage() {
               {loc.notes && <InfoRow icon={Info} label="Lưu ý" value={loc.notes} />}
               {loc.contact && <InfoRow icon={Info} label="Liên hệ" value={loc.contact} />}
             </dl>
+          </Section>
+        )}
+
+        {(tours.data ?? []).length > 0 && (
+          <Section title="🗺️ TOUR GỢI Ý">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {(tours.data ?? []).map((t) => (
+                <TourCard key={t.id} tour={t} />
+              ))}
+            </div>
           </Section>
         )}
 
