@@ -43,6 +43,7 @@ function AdminPage() {
   const { user, loading } = useSession();
   const isAdmin = useIsAdmin(user?.id);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [tab, setTab] = useState<TabKey>("locations");
 
   useEffect(() => {
     if (user && isAdmin === false) {
