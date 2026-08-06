@@ -234,24 +234,15 @@ function LocationPage() {
           )}
         </Section>
 
-        {(loc.audio_vi_url || loc.audio_en_url) && (
-          <Section title="🎧 AUDIO GUIDE – THUYẾT MINH">
-            <div className="space-y-4">
-              {loc.audio_vi_url && (
-                <AudioPlayer
-                  url={loc.audio_vi_url}
-                  flag="🇻🇳"
-                  title="THUYẾT MINH TIẾNG VIỆT"
-                />
-              )}
-              {loc.audio_en_url && (
-                <AudioPlayer
-                  url={loc.audio_en_url}
-                  flag="🇬🇧"
-                  title="ENGLISH AUDIO GUIDE"
-                />
-              )}
-            </div>
+        {loc.audio_vi_url && (
+          <Section title="🇻🇳 AUDIO GUIDE – TIẾNG VIỆT">
+            <AudioPlayer url={loc.audio_vi_url} flag="🇻🇳" title="THUYẾT MINH TIẾNG VIỆT" />
+          </Section>
+        )}
+
+        {loc.audio_en_url && (
+          <Section title="🇬🇧 AUDIO GUIDE – ENGLISH">
+            <AudioPlayer url={loc.audio_en_url} flag="🇬🇧" title="ENGLISH AUDIO GUIDE" />
           </Section>
         )}
 
