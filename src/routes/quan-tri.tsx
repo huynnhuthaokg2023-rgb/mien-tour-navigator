@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { AdminCrud, type CrudField } from "@/components/admin-crud";
+import { fetchBookings } from "@/lib/services";
 import {
   fetchLocationImages,
   fetchLocations,
@@ -41,6 +43,7 @@ function AdminPage() {
   const { user, loading } = useSession();
   const isAdmin = useIsAdmin(user?.id);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [tab, setTab] = useState<TabKey>("locations");
 
   useEffect(() => {
     if (user && isAdmin === false) {
@@ -85,9 +88,72 @@ function AdminPage() {
         </p>
       )}
 
-      {isAdmin && !editingId && <AdminList onEdit={setEditingId} />}
       {isAdmin && editingId && (
         <LocationEditor id={editingId} onBack={() => setEditingId(null)} />
+      )}
+
+      {isAdmin && !editingId && (
+        <>
+          <nav className="mt-6 flex flex-wrap gap-2">
+            {TABS.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
+                className={`rounded-2xl px-4 py-2 text-sm font-semibold ${
+                  tab === t.key
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </nav>
+
+          {tab === "locations" && <AdminList onEdit={setEditingId} />}
+          {tab === "tours" && <ToursAdmin />}
+          {tab === "vehicles" && (
+            <div className="mt-6">
+              <AdminCrud
+                table="vehicle_partners"
+                title="ĐỐI TÁC THUÊ XE"
+                titleKey="name"
+                subtitleKey="service_area"
+                defaults={{ name: "Đối tác mới", published: false }}
+                fields={VEHICLE_FIELDS}
+              />
+            </div>
+          )}
+          {tab === "guides" && (
+            <div className="mt-6">
+              <AdminCrud
+                table="guides"
+                title="HƯỚNG DẪN VIÊN"
+                titleKey="full_name"
+                subtitleKey="service_area"
+                defaults={{ full_name: "Hướng dẫn viên mới", published: false }}
+                fields={GUIDE_FIELDS}
+              />
+            </div>
+          )}
+          {tab === "events" && (
+            <div className="mt-6">
+              <AdminCrud
+                table="events"
+                title="SỰ KIỆN"
+                titleKey="title"
+                subtitleKey="place"
+                defaults={{
+                  title: "Sự kiện mới",
+                  slug: `su-kien-${Date.now().toString(36)}`,
+                  published: false,
+                }}
+                fields={EVENT_FIELDS}
+              />
+            </div>
+          )}
+          {tab === "bookings" && <BookingsAdmin />}
+        </>
       )}
 
       <Link to="/" className="mt-10 inline-block text-sm font-semibold text-primary">
@@ -96,6 +162,201 @@ function AdminPage() {
     </div>
   );
 }
+
+const TABS = [
+  { key: "locations", label: "Địa điểm" },
+  { key: "tours", label: "Tour" },
+  { key: "vehicles", label: "Thuê xe" },
+  { key: "guides", label: "Hướng dẫn viên" },
+  { key: "events", label: "Sự kiện" },
+  { key: "bookings", label: "Đặt dịch vụ" },
+] as const;
+
+type TabKey = (typeof TABS)[number]["key"];
+
+const VEHICLE_FIELDS: CrudField[] = [
+  { key: "name", label: "Tên đối tác", type: "text" },
+  { key: "vehicle_types", label: "Loại xe", type: "list" },
+  { key: "price_note", label: "Giá tham khảo", type: "text" },
+  { key: "service_area", label: "Khu vực phục vụ", type: "text" },
+  { key: "description", label: "Mô tả", type: "textarea" },
+  { key: "phone", label: "Điện thoại", type: "text" },
+  { key: "zalo", label: "Zalo", type: "text" },
+  { key: "facebook", label: "Facebook", type: "text" },
+  { key: "email", label: "Email", type: "text" },
+  { key: "website", label: "Website", type: "text" },
+  { key: "logo_url", label: "Logo", type: "file", accept: "image/*" },
+  { key: "vehicle_image_url", label: "Ảnh xe", type: "file", accept: "image/*" },
+  { key: "price_list_url", label: "Bảng giá (PDF/ảnh)", type: "file", accept: "image/*,application/pdf" },
+  { key: "license_url", label: "Giấy phép kinh doanh", type: "file", accept: "image/*,application/pdf" },
+  { key: "sort_order", label: "Thứ tự hiển thị", type: "number" },
+  { key: "published", label: "Xuất bản", type: "switch" },
+];
+
+const GUIDE_FIELDS: CrudField[] = [
+  { key: "full_name", label: "Họ tên", type: "text" },
+  { key: "languages", label: "Ngoại ngữ", type: "list" },
+  { key: "experience", label: "Kinh nghiệm", type: "text" },
+  { key: "rating", label: "Đánh giá (0–5)", type: "number" },
+  { key: "price_note", label: "Giá tham khảo", type: "text" },
+  { key: "service_area", label: "Khu vực hoạt động", type: "text" },
+  { key: "bio", label: "Giới thiệu", type: "textarea" },
+  { key: "phone", label: "Điện thoại", type: "text" },
+  { key: "email", label: "Email", type: "text" },
+  { key: "zalo", label: "Zalo", type: "text" },
+  { key: "photo_url", label: "Ảnh chân dung", type: "file", accept: "image/*" },
+  { key: "certificate_url", label: "Thẻ / chứng chỉ HDV", type: "file", accept: "image/*,application/pdf" },
+  { key: "sort_order", label: "Thứ tự hiển thị", type: "number" },
+  { key: "published", label: "Xuất bản", type: "switch" },
+];
+
+const EVENT_FIELDS: CrudField[] = [
+  { key: "title", label: "Tên sự kiện", type: "text" },
+  { key: "slug", label: "Đường dẫn (slug)", type: "text" },
+  { key: "description", label: "Mô tả", type: "textarea", rows: 5 },
+  { key: "place", label: "Địa điểm tổ chức", type: "text" },
+  { key: "start_date", label: "Ngày bắt đầu", type: "date" },
+  { key: "end_date", label: "Ngày kết thúc", type: "date" },
+  { key: "cover_image_url", label: "Ảnh bìa", type: "file", accept: "image/*" },
+  { key: "sort_order", label: "Thứ tự hiển thị", type: "number" },
+  { key: "published", label: "Xuất bản", type: "switch" },
+];
+
+function ToursAdmin() {
+  const locations = useQuery({
+    queryKey: ["admin-locations"],
+    queryFn: () => fetchLocations(undefined, true),
+  });
+
+  const fields: CrudField[] = [
+    { key: "name", label: "Tên tour", type: "text" },
+    { key: "slug", label: "Đường dẫn (slug)", type: "text" },
+    { key: "summary", label: "Mô tả ngắn", type: "textarea", rows: 3 },
+    {
+      key: "location_id",
+      label: "Địa điểm liên quan",
+      type: "select",
+      options: (locations.data ?? []).map((l) => ({ value: l.id, label: l.name })),
+    },
+    { key: "duration_label", label: "Thời lượng (2h, nửa ngày, 1 ngày…)", type: "text" },
+    { key: "duration_minutes", label: "Thời lượng (phút)", type: "number" },
+    { key: "distance_km", label: "Khoảng cách (km)", type: "number" },
+    { key: "transport", label: "Phương tiện", type: "text" },
+    { key: "itinerary", label: "Lịch trình (mỗi dòng một chặng)", type: "textarea", rows: 8 },
+    { key: "price_note", label: "Giá tham khảo", type: "text" },
+    { key: "cover_image_url", label: "Ảnh bìa", type: "file", accept: "image/*" },
+    { key: "video_url", label: "Video", type: "file", accept: "video/*" },
+    { key: "audio_vi_url", label: "🇻🇳 Audio tiếng Việt", type: "file", accept: "audio/*" },
+    { key: "audio_en_url", label: "🇬🇧 Audio English", type: "file", accept: "audio/*" },
+    { key: "map_embed_url", label: "Google Maps embed URL", type: "text" },
+    { key: "sort_order", label: "Thứ tự hiển thị", type: "number" },
+    { key: "published", label: "Xuất bản", type: "switch" },
+  ];
+
+  return (
+    <div className="mt-6">
+      <AdminCrud
+        table="tours"
+        title="TOUR GỢI Ý"
+        titleKey="name"
+        subtitleKey="duration_label"
+        defaults={{
+          name: "Tour mới",
+          slug: `tour-${Date.now().toString(36)}`,
+          published: false,
+        }}
+        fields={fields}
+      />
+    </div>
+  );
+}
+
+const BOOKING_LABELS: Record<string, string> = {
+  vehicle: "Thuê xe",
+  guide: "Hướng dẫn viên",
+  tour: "Tour",
+};
+
+function BookingsAdmin() {
+  const qc = useQueryClient();
+  const bookings = useQuery({ queryKey: ["admin-bookings"], queryFn: fetchBookings });
+
+  const setStatus = async (id: string, status: string) => {
+    const { error } = await supabase.from("service_bookings").update({ status }).eq("id", id);
+    if (error) return toast.error(error.message);
+    await qc.invalidateQueries();
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm("Xoá yêu cầu này?")) return;
+    const { error } = await supabase.from("service_bookings").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    await qc.invalidateQueries();
+  };
+
+  return (
+    <section className="mt-6 rounded-3xl bg-card p-4 shadow-elevated">
+      <h2 className="text-lg font-extrabold text-primary">YÊU CẦU ĐẶT DỊCH VỤ</h2>
+      {bookings.isLoading && <p className="mt-2 text-sm text-muted-foreground">Đang tải…</p>}
+      {!bookings.isLoading && (bookings.data ?? []).length === 0 && (
+        <p className="mt-2 text-sm text-muted-foreground">Chưa có yêu cầu nào.</p>
+      )}
+      <ul className="mt-3 space-y-3">
+        {(bookings.data ?? []).map((b) => (
+          <li key={b.id} className="rounded-2xl bg-secondary/60 p-4">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
+              <div className="min-w-0">
+                <p className="text-sm font-bold">
+                  {b.full_name} · {b.phone}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {BOOKING_LABELS[b.service_type] ?? b.service_type} ·{" "}
+                  {new Date(b.created_at).toLocaleString("vi-VN")}
+                </p>
+              </div>
+              <button
+                onClick={() => remove(b.id)}
+                aria-label="Xoá"
+                className="grid size-9 shrink-0 place-items-center rounded-xl bg-card text-destructive"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </div>
+            <dl className="mt-2 space-y-1 text-xs text-foreground/85">
+              {b.email && <div>Email: {b.email}</div>}
+              {b.travel_date && <div>Ngày đi: {b.travel_date}</div>}
+              <div>Số khách: {b.guests}</div>
+              {b.pickup && <div>Điểm đón: {b.pickup}</div>}
+              {b.note && <div>Ghi chú: {b.note}</div>}
+            </dl>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {["new", "contacted", "done", "cancelled"].map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setStatus(b.id, s)}
+                  className={`rounded-xl px-3 py-1.5 text-xs font-semibold ${
+                    b.status === s
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-card text-foreground/70"
+                  }`}
+                >
+                  {s === "new"
+                    ? "Mới"
+                    : s === "contacted"
+                      ? "Đã liên hệ"
+                      : s === "done"
+                        ? "Hoàn tất"
+                        : "Huỷ"}
+                </button>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 
 function LoginCard() {
   const [email, setEmail] = useState("");
