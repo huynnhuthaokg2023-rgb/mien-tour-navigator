@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YeuThichRouteImport } from './routes/yeu-thich'
+import { Route as TimKiemRouteImport } from './routes/tim-kiem'
 import { Route as ThueXeRouteImport } from './routes/thue-xe'
 import { Route as SuKienRouteImport } from './routes/su-kien'
 import { Route as QuanTriRouteImport } from './routes/quan-tri'
@@ -27,6 +28,11 @@ import { Route as DiaDiemSlugRouteImport } from './routes/dia-diem.$slug'
 const YeuThichRoute = YeuThichRouteImport.update({
   id: '/yeu-thich',
   path: '/yeu-thich',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimKiemRoute = TimKiemRouteImport.update({
+  id: '/tim-kiem',
+  path: '/tim-kiem',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThueXeRoute = ThueXeRouteImport.update({
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/quan-tri': typeof QuanTriRoute
   '/su-kien': typeof SuKienRoute
   '/thue-xe': typeof ThueXeRoute
+  '/tim-kiem': typeof TimKiemRoute
   '/yeu-thich': typeof YeuThichRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/quan-tri': typeof QuanTriRoute
   '/su-kien': typeof SuKienRoute
   '/thue-xe': typeof ThueXeRoute
+  '/tim-kiem': typeof TimKiemRoute
   '/yeu-thich': typeof YeuThichRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/quan-tri': typeof QuanTriRoute
   '/su-kien': typeof SuKienRoute
   '/thue-xe': typeof ThueXeRoute
+  '/tim-kiem': typeof TimKiemRoute
   '/yeu-thich': typeof YeuThichRoute
   '/dia-diem/$slug': typeof DiaDiemSlugRoute
   '/khu-vuc/$slug': typeof KhuVucSlugRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/quan-tri'
     | '/su-kien'
     | '/thue-xe'
+    | '/tim-kiem'
     | '/yeu-thich'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/quan-tri'
     | '/su-kien'
     | '/thue-xe'
+    | '/tim-kiem'
     | '/yeu-thich'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/quan-tri'
     | '/su-kien'
     | '/thue-xe'
+    | '/tim-kiem'
     | '/yeu-thich'
     | '/dia-diem/$slug'
     | '/khu-vuc/$slug'
@@ -204,6 +216,7 @@ export interface RootRouteChildren {
   QuanTriRoute: typeof QuanTriRoute
   SuKienRoute: typeof SuKienRoute
   ThueXeRoute: typeof ThueXeRoute
+  TimKiemRoute: typeof TimKiemRoute
   YeuThichRoute: typeof YeuThichRoute
   DiaDiemSlugRoute: typeof DiaDiemSlugRoute
   KhuVucSlugRoute: typeof KhuVucSlugRoute
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/yeu-thich'
       fullPath: '/yeu-thich'
       preLoaderRoute: typeof YeuThichRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tim-kiem': {
+      id: '/tim-kiem'
+      path: '/tim-kiem'
+      fullPath: '/tim-kiem'
+      preLoaderRoute: typeof TimKiemRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/thue-xe': {
@@ -324,6 +344,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuanTriRoute: QuanTriRoute,
   SuKienRoute: SuKienRoute,
   ThueXeRoute: ThueXeRoute,
+  TimKiemRoute: TimKiemRoute,
   YeuThichRoute: YeuThichRoute,
   DiaDiemSlugRoute: DiaDiemSlugRoute,
   KhuVucSlugRoute: KhuVucSlugRoute,
@@ -334,13 +355,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

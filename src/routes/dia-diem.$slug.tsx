@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import { TourCard } from "@/components/tour-card";
+import { DistanceBadge } from "@/components/distance-badge";
+
 import { useFavorites } from "@/hooks/use-favorites";
 import { fetchTours } from "@/lib/services";
 import {
@@ -267,6 +269,8 @@ function LocationPage() {
               <Navigation className="size-5" /> CHỈ ĐƯỜNG
             </a>
           </Button>
+          <DistanceBadge target={{ latitude: loc.latitude, longitude: loc.longitude }} />
+
         </Section>
 
         <div className="mt-10 grid gap-2 sm:grid-cols-2">
