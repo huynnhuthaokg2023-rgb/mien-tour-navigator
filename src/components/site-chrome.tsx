@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Compass, Menu, X } from "lucide-react";
+import { Compass, Menu, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -51,15 +51,25 @@ export function SiteHeader() {
           ))}
         </nav>
 
+        <div className="flex items-center gap-2">
+          <Link
+            to="/tim-kiem"
+            search={{ q: "" }}
+            aria-label="Tìm kiếm"
+            className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"
+          >
+            <Search className="size-5" />
+          </Link>
+          <button
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Mở menu"
+            aria-expanded={open}
+            className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary lg:hidden"
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
 
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Mở menu"
-          aria-expanded={open}
-          className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary lg:hidden"
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
       </div>
 
       <div
