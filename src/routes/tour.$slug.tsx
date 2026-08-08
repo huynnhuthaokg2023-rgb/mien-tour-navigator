@@ -94,11 +94,23 @@ function TourDetailPage() {
           className="h-56 w-full object-cover sm:h-80"
         />
         <div className="absolute inset-0 bg-gradient-hero" />
+        <button
+          type="button"
+          onClick={() => fav.toggle(t.slug)}
+          aria-pressed={fav.has(t.slug)}
+          aria-label={fav.has(t.slug) ? "Bỏ khỏi yêu thích" : "Lưu tour yêu thích"}
+          className="absolute right-4 top-4 grid size-11 place-items-center rounded-full bg-background/90 shadow-elevated"
+        >
+          <Heart
+            className={`size-5 ${fav.has(t.slug) ? "fill-primary text-primary" : "text-primary"}`}
+          />
+        </button>
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-4 pb-6">
           <h1 className="text-2xl font-extrabold text-background sm:text-4xl">{t.name}</h1>
           {t.summary && <p className="mt-1 text-sm text-background/90">{t.summary}</p>}
         </div>
       </div>
+
 
       <div className="mx-auto max-w-3xl px-4 pb-6">
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
