@@ -6,6 +6,8 @@ import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import { TourCard } from "@/components/tour-card";
 import { DistanceBadge } from "@/components/distance-badge";
+import { WeatherCard } from "@/components/weather-card";
+
 
 import { useFavorites } from "@/hooks/use-favorites";
 import { fetchTours } from "@/lib/services";
@@ -248,7 +250,12 @@ function LocationPage() {
           </Section>
         )}
 
+        <Section title="THỜI TIẾT HÔM NAY">
+          <WeatherCard latitude={loc.latitude} longitude={loc.longitude} name={loc.name} />
+        </Section>
+
         <Section title="VỊ TRÍ TRÊN BẢN ĐỒ">
+
           {mapSrc ? (
             <div className="overflow-hidden rounded-3xl shadow-elevated">
               <iframe
