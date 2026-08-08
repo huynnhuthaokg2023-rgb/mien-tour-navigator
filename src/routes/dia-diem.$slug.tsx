@@ -6,6 +6,8 @@ import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import { TourCard } from "@/components/tour-card";
 import { DistanceBadge } from "@/components/distance-badge";
+import { WeatherCard } from "@/components/weather-card";
+
 
 import { useFavorites } from "@/hooks/use-favorites";
 import { fetchTours } from "@/lib/services";
