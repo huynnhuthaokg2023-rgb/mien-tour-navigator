@@ -248,7 +248,12 @@ function LocationPage() {
           </Section>
         )}
 
+        <Section title="THỜI TIẾT HÔM NAY">
+          <WeatherCard latitude={loc.latitude} longitude={loc.longitude} name={loc.name} />
+        </Section>
+
         <Section title="VỊ TRÍ TRÊN BẢN ĐỒ">
+
           {mapSrc ? (
             <div className="overflow-hidden rounded-3xl shadow-elevated">
               <iframe
