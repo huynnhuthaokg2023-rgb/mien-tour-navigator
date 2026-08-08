@@ -66,6 +66,7 @@ function TourDetailPage() {
     queryFn: () => fetchLocations(),
   });
   const guides = useQuery({ queryKey: ["guides"], queryFn: () => fetchGuides() });
+  const fav = useFavorites("tour");
 
   if (tour.isLoading)
     return <div className="mx-auto h-96 max-w-3xl animate-pulse rounded-3xl bg-secondary" />;
