@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   Bike,
   Clock,
+  Heart,
   MapPin,
   Navigation,
   PlayCircle,
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import { BookingDialog, type BookingTarget } from "@/components/booking-dialog";
+import { useFavorites } from "@/hooks/use-favorites";
 import { embedVideoSrc, fetchLocations } from "@/lib/mien-tour";
 import { fetchGuides, fetchTour, fetchTourImages, GUIDE_DISCLAIMER } from "@/lib/services";
 import { coverFor } from "@/lib/images";
