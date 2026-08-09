@@ -8,6 +8,7 @@ import { TourCard } from "@/components/tour-card";
 import { DistanceBadge } from "@/components/distance-badge";
 import { WeatherCard } from "@/components/weather-card";
 import { ReviewSection } from "@/components/reviews";
+import { trackEvent, useTrackView } from "@/lib/analytics";
 
 
 
@@ -67,6 +68,17 @@ function LocationPage() {
     enabled: Boolean(location.data?.id),
   });
   const favorites = useFavorites();
+
+  useTrackView(
+    location.data
+      ? {
+          event_type: "location_view",
+          target_type: "location",
+          target_id: location.data.id,
+          target_label: location.data.name,
+        }
+      : null,
+  );
 
   if (location.isLoading) {
     return <div className="mx-auto h-96 max-w-3xl animate-pulse rounded-3xl bg-secondary" />;
@@ -219,6 +231,17 @@ function LocationPage() {
             <div className="overflow-hidden rounded-3xl shadow-elevated">
               <iframe
                 src={videoSrc}
+                onLoad={() =>
+                  trackEvent(
+                    {
+                      event_type: "video_play",
+                      target_type: "location",
+                      target_id: loc.id,
+                      target_label: loc.name,
+                    },
+                    true,
+                  )
+                }
                 title={`Video ${loc.name}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
                 allowFullScreen
@@ -228,6 +251,17 @@ function LocationPage() {
           ) : loc.video_url ? (
             <video
               src={loc.video_url}
+              onPlay={() =>
+                trackEvent(
+                  {
+                    event_type: "video_play",
+                    target_type: "location",
+                    target_id: loc.id,
+                    target_label: loc.name,
+                  },
+                  true,
+                )
+              }
               controls
               preload="metadata"
               playsInline
@@ -242,13 +276,37 @@ function LocationPage() {
 
         {loc.audio_vi_url && (
           <Section title="🇻🇳 AUDIO GUIDE – TIẾNG VIỆT">
-            <AudioPlayer url={loc.audio_vi_url} flag="🇻🇳" title="THUYẾT MINH TIẾNG VIỆT" />
+            <AudioPlayer
+              url={loc.audio_vi_url}
+              flag="🇻🇳"
+              title="THUYẾT MINH TIẾNG VIỆT"
+              onPlay={() =>
+                trackEvent({
+                  event_type: "audio_play",
+                  target_type: "location",
+                  target_id: loc.id,
+                  target_label: `${loc.name} – Tiếng Việt`,
+                })
+              }
+            />
           </Section>
         )}
 
         {loc.audio_en_url && (
           <Section title="🇬🇧 AUDIO GUIDE – ENGLISH">
-            <AudioPlayer url={loc.audio_en_url} flag="🇬🇧" title="ENGLISH AUDIO GUIDE" />
+            <AudioPlayer
+              url={loc.audio_en_url}
+              flag="🇬🇧"
+              title="ENGLISH AUDIO GUIDE"
+              onPlay={() =>
+                trackEvent({
+                  event_type: "audio_play",
+                  target_type: "location",
+                  target_id: loc.id,
+                  target_label: `${loc.name} – English`,
+                })
+              }
+            />
           </Section>
         )}
 

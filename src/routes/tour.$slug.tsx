@@ -16,6 +16,7 @@ import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import { BookingDialog, type BookingTarget } from "@/components/booking-dialog";
 import { ReviewSection } from "@/components/reviews";
+import { trackEvent, useTrackView } from "@/lib/analytics";
 
 import { useFavorites } from "@/hooks/use-favorites";
 import { embedVideoSrc, fetchLocations } from "@/lib/mien-tour";
