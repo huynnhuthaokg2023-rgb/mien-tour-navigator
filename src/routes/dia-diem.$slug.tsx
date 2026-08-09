@@ -7,6 +7,8 @@ import { ImageGallery } from "@/components/image-gallery";
 import { TourCard } from "@/components/tour-card";
 import { DistanceBadge } from "@/components/distance-badge";
 import { WeatherCard } from "@/components/weather-card";
+import { ReviewSection } from "@/components/reviews";
+
 
 
 import { useFavorites } from "@/hooks/use-favorites";
@@ -250,9 +252,14 @@ function LocationPage() {
           </Section>
         )}
 
+        <Section title="⭐ ĐÁNH GIÁ CỦA DU KHÁCH">
+          <ReviewSection targetType="location" targetId={loc.id} />
+        </Section>
+
         <Section title="THỜI TIẾT HÔM NAY">
           <WeatherCard latitude={loc.latitude} longitude={loc.longitude} name={loc.name} />
         </Section>
+
 
         <Section title="VỊ TRÍ TRÊN BẢN ĐỒ">
 
