@@ -135,6 +135,13 @@ function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdminArea = pathname.startsWith("/quan-tri");
 
+  useEffect(() => {
+    if (isAdminArea) return;
+    trackEvent({ event_type: "page_view", target_type: "page", target_label: pathname });
+  }, [pathname, isAdminArea]);
+
+
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-dvh flex-col">
