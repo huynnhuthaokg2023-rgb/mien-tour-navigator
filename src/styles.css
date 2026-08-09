@@ -107,7 +107,7 @@
   --gradient-brand: linear-gradient(135deg, var(--primary) 0%, var(--primary-soft) 100%);
   --shadow-card: 0 1px 2px oklch(0.24 0.03 150 / 6%), 0 12px 28px -14px oklch(0.24 0.03 150 / 22%);
   --shadow-float: 0 18px 44px -18px oklch(0.24 0.03 150 / 32%);
-  --gold: oklch(0.72 0.13 82);
+  --gold: oklch(0.72 0.088 89); /* #C8A951 */
   --font-display:
     "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -228,4 +228,33 @@
 
 @utility bg-gold-soft {
   background-color: color-mix(in oklab, var(--gold) 16%, transparent);
+}
+
+@utility bg-gold-solid {
+  background-color: var(--gold);
+}
+
+@keyframes mt-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-slide-up {
+  animation: mt-slide-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility hover-lift {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-float);
+  }
 }

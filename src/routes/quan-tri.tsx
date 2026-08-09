@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { AdminCrud, type CrudField } from "@/components/admin-crud";
+import { StatsAdmin } from "@/components/stats-admin";
 import { fetchBookings } from "@/lib/services";
 import {
   fetchLocationImages,
@@ -154,6 +155,7 @@ function AdminPage() {
           )}
           {tab === "bookings" && <BookingsAdmin />}
           {tab === "reviews" && <ReviewsAdmin />}
+          {tab === "stats" && <StatsAdmin />}
 
         </>
       )}
@@ -173,6 +175,7 @@ const TABS = [
   { key: "events", label: "Sự kiện" },
   { key: "bookings", label: "Đặt dịch vụ" },
   { key: "reviews", label: "Đánh giá" },
+  { key: "stats", label: "Thống kê" },
 
 ] as const;
 

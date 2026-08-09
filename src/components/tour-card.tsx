@@ -19,7 +19,7 @@ export function TourCard({
     <Link
       to="/tour/$slug"
       params={{ slug: tour.slug }}
-      className="group overflow-hidden rounded-3xl bg-card shadow-elevated transition-shadow hover:shadow-floating"
+      className="group hover-lift animate-fade-in overflow-hidden rounded-3xl bg-card shadow-elevated"
     >
       <img
         src={coverFor(tour.slug, tour.cover_image_url)}

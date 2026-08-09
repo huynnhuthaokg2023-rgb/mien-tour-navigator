@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { trackEvent } from "@/lib/analytics";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -134,6 +135,13 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdminArea = pathname.startsWith("/quan-tri");
+
+  useEffect(() => {
+    if (isAdminArea) return;
+    trackEvent({ event_type: "page_view", target_type: "page", target_label: pathname });
+  }, [pathname, isAdminArea]);
+
+
 
   return (
     <QueryClientProvider client={queryClient}>
