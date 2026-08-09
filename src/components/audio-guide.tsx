@@ -13,10 +13,12 @@ export function AudioPlayer({
   url,
   title,
   flag,
+  onPlay,
 }: {
   url: string;
   title: string;
   flag: string;
+  onPlay?: () => void;
 }) {
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
@@ -30,6 +32,7 @@ export function AudioPlayer({
     if (el.paused) {
       void el.play();
       setPlaying(true);
+      onPlay?.();
     } else {
       el.pause();
       setPlaying(false);
