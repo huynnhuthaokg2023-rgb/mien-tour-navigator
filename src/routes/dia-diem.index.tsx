@@ -81,9 +81,11 @@ function AllLocationsPage() {
       </div>
 
       <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {list.map((l) => (
-          <LocationCard key={l.id} location={l} />
-        ))}
+        {locations.isLoading
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-72 animate-pulse rounded-3xl bg-secondary" />
+            ))
+          : list.map((l) => <LocationCard key={l.id} location={l} />)}
       </div>
       {!locations.isLoading && list.length === 0 && (
         <p className="mt-10 text-center text-sm text-muted-foreground">
