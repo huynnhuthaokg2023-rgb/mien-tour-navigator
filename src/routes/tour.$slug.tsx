@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { AudioPlayer } from "@/components/audio-guide";
 import { ImageGallery } from "@/components/image-gallery";
 import { BookingDialog, type BookingTarget } from "@/components/booking-dialog";
+import { ReviewSection } from "@/components/reviews";
+
 import { useFavorites } from "@/hooks/use-favorites";
 import { embedVideoSrc, fetchLocations } from "@/lib/mien-tour";
 import { fetchGuides, fetchTour, fetchTourImages, GUIDE_DISCLAIMER } from "@/lib/services";
@@ -196,6 +198,12 @@ function TourDetailPage() {
             </p>
           )}
         </Section>
+
+        <Section title="⭐ ĐÁNH GIÁ TOUR">
+          <ReviewSection targetType="tour" targetId={t.id} />
+        </Section>
+
+
 
         <Section title="👨‍🏫 THUÊ HƯỚNG DẪN VIÊN">
           <div className="flex flex-wrap gap-2">
