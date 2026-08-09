@@ -153,6 +153,8 @@ function AdminPage() {
             </div>
           )}
           {tab === "bookings" && <BookingsAdmin />}
+          {tab === "reviews" && <ReviewsAdmin />}
+
         </>
       )}
 
@@ -170,6 +172,8 @@ const TABS = [
   { key: "guides", label: "Hướng dẫn viên" },
   { key: "events", label: "Sự kiện" },
   { key: "bookings", label: "Đặt dịch vụ" },
+  { key: "reviews", label: "Đánh giá" },
+
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];
