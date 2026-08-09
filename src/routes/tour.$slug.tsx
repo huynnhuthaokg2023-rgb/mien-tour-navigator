@@ -71,6 +71,17 @@ function TourDetailPage() {
   const guides = useQuery({ queryKey: ["guides"], queryFn: () => fetchGuides() });
   const fav = useFavorites("tour");
 
+  useTrackView(
+    tour.data
+      ? {
+          event_type: "tour_view",
+          target_type: "tour",
+          target_id: tour.data.id,
+          target_label: tour.data.name,
+        }
+      : null,
+  );
+
   if (tour.isLoading)
     return <div className="mx-auto h-96 max-w-3xl animate-pulse rounded-3xl bg-secondary" />;
 
@@ -150,6 +161,17 @@ function TourDetailPage() {
             <div className="overflow-hidden rounded-3xl shadow-elevated">
               <iframe
                 src={videoSrc}
+                onLoad={() =>
+                  trackEvent(
+                    {
+                      event_type: "video_play",
+                      target_type: "tour",
+                      target_id: t.id,
+                      target_label: t.name,
+                    },
+                    true,
+                  )
+                }
                 title={`Video ${t.name}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
                 allowFullScreen
@@ -159,6 +181,17 @@ function TourDetailPage() {
           ) : t.video_url ? (
             <video
               src={t.video_url}
+              onPlay={() =>
+                trackEvent(
+                  {
+                    event_type: "video_play",
+                    target_type: "tour",
+                    target_id: t.id,
+                    target_label: t.name,
+                  },
+                  true,
+                )
+              }
               controls
               preload="metadata"
               playsInline
@@ -173,12 +206,36 @@ function TourDetailPage() {
 
         {t.audio_vi_url && (
           <Section title="🇻🇳 AUDIO GUIDE – TIẾNG VIỆT">
-            <AudioPlayer url={t.audio_vi_url} flag="🇻🇳" title="THUYẾT MINH TIẾNG VIỆT" />
+            <AudioPlayer
+              url={t.audio_vi_url}
+              flag="🇻🇳"
+              title="THUYẾT MINH TIẾNG VIỆT"
+              onPlay={() =>
+                trackEvent({
+                  event_type: "audio_play",
+                  target_type: "tour",
+                  target_id: t.id,
+                  target_label: `${t.name} – Tiếng Việt`,
+                })
+              }
+            />
           </Section>
         )}
         {t.audio_en_url && (
           <Section title="🇬🇧 AUDIO GUIDE – ENGLISH">
-            <AudioPlayer url={t.audio_en_url} flag="🇬🇧" title="ENGLISH AUDIO GUIDE" />
+            <AudioPlayer
+              url={t.audio_en_url}
+              flag="🇬🇧"
+              title="ENGLISH AUDIO GUIDE"
+              onPlay={() =>
+                trackEvent({
+                  event_type: "audio_play",
+                  target_type: "tour",
+                  target_id: t.id,
+                  target_label: `${t.name} – English`,
+                })
+              }
+            />
           </Section>
         )}
 
