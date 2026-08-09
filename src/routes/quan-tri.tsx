@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { AdminCrud, type CrudField } from "@/components/admin-crud";
+import { StatsAdmin } from "@/components/stats-admin";
 import { fetchBookings } from "@/lib/services";
 import {
   fetchLocationImages,
