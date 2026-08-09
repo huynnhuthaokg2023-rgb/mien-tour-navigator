@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          path: string
+          target_id: string | null
+          target_label: string
+          target_type: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          path?: string
+          target_id?: string | null
+          target_label?: string
+          target_type?: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          path?: string
+          target_id?: string | null
+          target_label?: string
+          target_type?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           cover_image_url: string | null
