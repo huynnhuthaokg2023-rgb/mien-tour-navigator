@@ -229,3 +229,32 @@
 @utility bg-gold-soft {
   background-color: color-mix(in oklab, var(--gold) 16%, transparent);
 }
+
+@utility bg-gold-solid {
+  background-color: var(--gold);
+}
+
+@keyframes mt-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-slide-up {
+  animation: mt-slide-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility hover-lift {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-float);
+  }
+}
