@@ -288,6 +288,39 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          approved: boolean
+          author_name: string
+          comment: string
+          created_at: string
+          id: string
+          rating: number
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          approved?: boolean
+          author_name?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          approved?: boolean
+          author_name?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: []
+      }
       service_bookings: {
         Row: {
           created_at: string
