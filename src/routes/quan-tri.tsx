@@ -154,6 +154,7 @@ function AdminPage() {
           )}
           {tab === "bookings" && <BookingsAdmin />}
           {tab === "reviews" && <ReviewsAdmin />}
+          {tab === "stats" && <StatsAdmin />}
 
         </>
       )}
@@ -173,6 +174,7 @@ const TABS = [
   { key: "events", label: "Sự kiện" },
   { key: "bookings", label: "Đặt dịch vụ" },
   { key: "reviews", label: "Đánh giá" },
+  { key: "stats", label: "Thống kê" },
 
 ] as const;
 
