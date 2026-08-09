@@ -6,7 +6,7 @@ import type { TourLocation } from "@/lib/mien-tour";
 
 export function LocationCard({ location }: { location: TourLocation }) {
   return (
-    <article className="group overflow-hidden rounded-3xl bg-card shadow-elevated transition-shadow hover:shadow-floating">
+    <article className="group hover-lift animate-fade-in overflow-hidden rounded-3xl bg-card shadow-elevated">
       <Link
         to="/dia-diem/$slug"
         params={{ slug: location.slug }}
