@@ -868,3 +868,90 @@ function FileField({
   );
 }
 
+
+function ReviewsAdmin() {
+  const qc = useQueryClient();
+  const reviews = useQuery({
+    queryKey: ["admin-reviews"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("reviews")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const setApproved = async (id: string, approved: boolean) => {
+    const { error } = await supabase.from("reviews").update({ approved }).eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success(approved ? "Đã duyệt bình luận." : "Đã ẩn bình luận.");
+    await qc.invalidateQueries();
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm("Xoá bình luận này?")) return;
+    const { error } = await supabase.from("reviews").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Đã xoá.");
+    await qc.invalidateQueries();
+  };
+
+  return (
+    <section className="mt-6 rounded-3xl bg-card p-4 shadow-elevated">
+      <h2 className="text-lg font-extrabold text-primary">ĐÁNH GIÁ &amp; BÌNH LUẬN</h2>
+      {reviews.isLoading && <p className="mt-2 text-sm text-muted-foreground">Đang tải…</p>}
+      {!reviews.isLoading && (reviews.data ?? []).length === 0 && (
+        <p className="mt-2 text-sm text-muted-foreground">Chưa có đánh giá nào.</p>
+      )}
+      <ul className="mt-3 space-y-3">
+        {(reviews.data ?? []).map((r) => (
+          <li key={r.id} className="rounded-2xl bg-secondary/60 p-4">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
+              <div className="min-w-0">
+                <p className="text-sm font-bold">
+                  {r.author_name} · {"★".repeat(r.rating)}
+                  <span className="text-muted-foreground">{"★".repeat(5 - r.rating)}</span>
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {r.target_type === "tour" ? "Tour" : "Địa điểm"} ·{" "}
+                  {new Date(r.created_at).toLocaleString("vi-VN")} ·{" "}
+                  {r.approved ? "Đã duyệt" : "Chờ duyệt"}
+                </p>
+              </div>
+              <button
+                onClick={() => remove(r.id)}
+                aria-label="Xoá"
+                className="grid size-9 shrink-0 place-items-center rounded-xl bg-card text-destructive"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </div>
+            {r.comment && (
+              <p className="mt-2 text-sm whitespace-pre-line text-foreground/85">{r.comment}</p>
+            )}
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                onClick={() => setApproved(r.id, true)}
+                className={`rounded-xl px-3 py-1.5 text-xs font-semibold ${
+                  r.approved ? "bg-primary text-primary-foreground" : "bg-card text-foreground/70"
+                }`}
+              >
+                Duyệt
+              </button>
+              <button
+                onClick={() => setApproved(r.id, false)}
+                className={`rounded-xl px-3 py-1.5 text-xs font-semibold ${
+                  r.approved ? "bg-card text-foreground/70" : "bg-primary text-primary-foreground"
+                }`}
+              >
+                Ẩn
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
