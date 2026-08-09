@@ -107,7 +107,7 @@
   --gradient-brand: linear-gradient(135deg, var(--primary) 0%, var(--primary-soft) 100%);
   --shadow-card: 0 1px 2px oklch(0.24 0.03 150 / 6%), 0 12px 28px -14px oklch(0.24 0.03 150 / 22%);
   --shadow-float: 0 18px 44px -18px oklch(0.24 0.03 150 / 32%);
-  --gold: oklch(0.72 0.13 82);
+  --gold: oklch(0.72 0.088 89); /* #C8A951 */
   --font-display:
     "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
