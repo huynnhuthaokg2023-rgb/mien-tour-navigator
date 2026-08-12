@@ -11,6 +11,8 @@ import {
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { AiAssistant } from "@/components/ai-assistant";
+
 import { trackEvent } from "@/lib/analytics";
 
 import appCss from "../styles.css?url";
@@ -152,7 +154,9 @@ function RootComponent() {
         </main>
         {!isAdminArea && <SiteFooter />}
       </div>
+      {!isAdminArea && <AiAssistant />}
       <Toaster position="top-center" richColors />
+
     </QueryClientProvider>
   );
 }
