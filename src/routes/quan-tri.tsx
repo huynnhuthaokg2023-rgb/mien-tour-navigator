@@ -167,6 +167,7 @@ const VEHICLE_FIELDS: CrudField[] = [
     key: "availability_status",
     label: "Trạng thái",
     type: "select",
+    nullable: false,
     options: [
       { value: "available", label: "Còn xe" },
       { value: "unavailable", label: "Hết xe" },
@@ -206,6 +207,7 @@ const GUIDE_FIELDS: CrudField[] = [
     key: "gender",
     label: "Giới tính",
     type: "select",
+    nullable: false,
     options: [
       { value: "Nam", label: "Nam" },
       { value: "Nữ", label: "Nữ" },
@@ -223,6 +225,7 @@ const GUIDE_FIELDS: CrudField[] = [
     key: "availability_status",
     label: "Trạng thái",
     type: "select",
+    nullable: false,
     options: [
       { value: "accepting", label: "Đang nhận khách" },
       { value: "full", label: "Hết lịch" },

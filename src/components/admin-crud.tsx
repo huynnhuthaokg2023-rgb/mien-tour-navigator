@@ -23,6 +23,8 @@ export type CrudField = {
   childTable?: GalleryTable;
   /** Cột khoá ngoại trong bảng ảnh con */
   childKey?: string;
+  /** Cho phép bỏ trống (select). Mặc định true */
+  nullable?: boolean;
 };
 
 export type GalleryTable = "vehicle_partner_images" | "guide_images";
@@ -238,10 +240,12 @@ function CrudEditor({
               <select
                 id={f.key}
                 value={(value as string) ?? ""}
-                onChange={(e) => set({ [f.key]: e.target.value || null })}
+                onChange={(e) =>
+                  set({ [f.key]: e.target.value || (f.nullable === false ? "" : null) })
+                }
                 className="mt-1 h-12 w-full rounded-2xl border border-input bg-background px-3 text-sm"
               >
-                <option value="">— Không chọn —</option>
+                {f.nullable === false ? null : <option value="">— Không chọn —</option>}
                 {(f.options ?? []).map((o) => (
                   <option key={o.value} value={o.value}>
                     {o.label}
