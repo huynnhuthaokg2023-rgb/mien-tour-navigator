@@ -148,8 +148,7 @@ function AdminPage() {
 const TABS = [
   { key: "locations", label: "Địa điểm" },
   { key: "tours", label: "Tour" },
-  { key: "vehicles", label: "Thuê xe" },
-  { key: "guides", label: "Hướng dẫn viên" },
+  { key: "partners", label: "Đối tác dịch vụ" },
   { key: "events", label: "Sự kiện" },
   { key: "bookings", label: "Đặt dịch vụ" },
   { key: "reviews", label: "Đánh giá" },
@@ -160,40 +159,146 @@ const TABS = [
 type TabKey = (typeof TABS)[number]["key"];
 
 const VEHICLE_FIELDS: CrudField[] = [
-  { key: "name", label: "Tên đối tác", type: "text" },
-  { key: "vehicle_types", label: "Loại xe", type: "list" },
+  { key: "name", label: "Tên đơn vị", type: "text" },
+  { key: "contact_person", label: "Người liên hệ", type: "text" },
+  { key: "vehicle_types", label: "Danh sách loại xe", type: "list" },
   { key: "price_note", label: "Giá tham khảo", type: "text" },
-  { key: "service_area", label: "Khu vực phục vụ", type: "text" },
+  {
+    key: "availability_status",
+    label: "Trạng thái",
+    type: "select",
+    options: [
+      { value: "available", label: "Còn xe" },
+      { value: "unavailable", label: "Hết xe" },
+      { value: "paused", label: "Tạm ngưng" },
+    ],
+  },
+  { key: "address", label: "Địa chỉ", type: "text" },
+  { key: "service_area", label: "Khu vực hoạt động", type: "text" },
   { key: "description", label: "Mô tả", type: "textarea" },
+  { key: "notes", label: "Ghi chú", type: "textarea", rows: 3 },
   { key: "phone", label: "Điện thoại", type: "text" },
   { key: "zalo", label: "Zalo", type: "text" },
   { key: "facebook", label: "Facebook", type: "text" },
   { key: "email", label: "Email", type: "text" },
   { key: "website", label: "Website", type: "text" },
   { key: "logo_url", label: "Logo", type: "file", accept: "image/*" },
-  { key: "vehicle_image_url", label: "Ảnh xe", type: "file", accept: "image/*" },
+  { key: "cover_image_url", label: "Ảnh bìa", type: "file", accept: "image/*" },
+  { key: "vehicle_image_url", label: "Ảnh xe đại diện", type: "file", accept: "image/*" },
+  {
+    key: "gallery",
+    label: "Album hình ảnh xe",
+    type: "gallery",
+    childTable: "vehicle_partner_images",
+    childKey: "partner_id",
+  },
+  { key: "video_url", label: "Video giới thiệu", type: "file", accept: "video/*" },
   { key: "price_list_url", label: "Bảng giá (PDF/ảnh)", type: "file", accept: "image/*,application/pdf" },
   { key: "license_url", label: "Giấy phép kinh doanh", type: "file", accept: "image/*,application/pdf" },
+  { key: "featured", label: "Đánh dấu nổi bật", type: "switch" },
   { key: "sort_order", label: "Thứ tự hiển thị", type: "number" },
-  { key: "published", label: "Xuất bản", type: "switch" },
+  { key: "published", label: "Hiển thị (xuất bản)", type: "switch" },
 ];
 
 const GUIDE_FIELDS: CrudField[] = [
   { key: "full_name", label: "Họ tên", type: "text" },
-  { key: "languages", label: "Ngoại ngữ", type: "list" },
+  {
+    key: "gender",
+    label: "Giới tính",
+    type: "select",
+    options: [
+      { value: "Nam", label: "Nam" },
+      { value: "Nữ", label: "Nữ" },
+      { value: "Khác", label: "Khác" },
+    ],
+  },
+  { key: "birth_date", label: "Ngày sinh (không bắt buộc)", type: "date" },
+  { key: "nationality", label: "Quốc tịch", type: "text" },
+  { key: "languages", label: "Ngôn ngữ sử dụng", type: "list" },
   { key: "experience", label: "Kinh nghiệm", type: "text" },
-  { key: "rating", label: "Đánh giá (0–5)", type: "number" },
-  { key: "price_note", label: "Giá tham khảo", type: "text" },
+  { key: "specialties", label: "Chuyên môn", type: "textarea", rows: 3 },
   { key: "service_area", label: "Khu vực hoạt động", type: "text" },
+  { key: "price_note", label: "Giá tham khảo", type: "text" },
+  {
+    key: "availability_status",
+    label: "Trạng thái",
+    type: "select",
+    options: [
+      { value: "accepting", label: "Đang nhận khách" },
+      { value: "full", label: "Hết lịch" },
+      { value: "off", label: "Tạm nghỉ" },
+    ],
+  },
+  { key: "rating", label: "Đánh giá (0–5)", type: "number" },
   { key: "bio", label: "Giới thiệu", type: "textarea" },
   { key: "phone", label: "Điện thoại", type: "text" },
-  { key: "email", label: "Email", type: "text" },
   { key: "zalo", label: "Zalo", type: "text" },
-  { key: "photo_url", label: "Ảnh chân dung", type: "file", accept: "image/*" },
-  { key: "certificate_url", label: "Thẻ / chứng chỉ HDV", type: "file", accept: "image/*,application/pdf" },
+  { key: "facebook", label: "Facebook", type: "text" },
+  { key: "email", label: "Email", type: "text" },
+  { key: "photo_url", label: "Ảnh đại diện", type: "file", accept: "image/*" },
+  {
+    key: "gallery",
+    label: "Album ảnh",
+    type: "gallery",
+    childTable: "guide_images",
+    childKey: "guide_id",
+  },
+  { key: "video_url", label: "Video giới thiệu", type: "file", accept: "video/*" },
+  { key: "certificate_url", label: "Chứng chỉ", type: "file", accept: "image/*,application/pdf" },
+  { key: "featured", label: "Đánh dấu nổi bật", type: "switch" },
   { key: "sort_order", label: "Thứ tự hiển thị", type: "number" },
-  { key: "published", label: "Xuất bản", type: "switch" },
+  { key: "published", label: "Hiển thị (xuất bản)", type: "switch" },
 ];
+
+function PartnersAdmin() {
+  const [sub, setSub] = useState<"vehicles" | "guides">("vehicles");
+
+  return (
+    <div className="mt-6 space-y-4">
+      <div className="flex gap-2">
+        {(
+          [
+            { key: "vehicles", label: "Đơn vị cho thuê xe" },
+            { key: "guides", label: "Hướng dẫn viên" },
+          ] as const
+        ).map((s) => (
+          <button
+            key={s.key}
+            onClick={() => setSub(s.key)}
+            className={`rounded-2xl px-4 py-2 text-sm font-semibold ${
+              sub === s.key
+                ? "bg-gold-solid text-primary-foreground"
+                : "bg-secondary text-secondary-foreground"
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {sub === "vehicles" ? (
+        <AdminCrud
+          table="vehicle_partners"
+          title="ĐƠN VỊ CHO THUÊ XE"
+          titleKey="name"
+          subtitleKey="service_area"
+          defaults={{ name: "Đơn vị mới", published: false }}
+          fields={VEHICLE_FIELDS}
+        />
+      ) : (
+        <AdminCrud
+          table="guides"
+          title="HƯỚNG DẪN VIÊN"
+          titleKey="full_name"
+          subtitleKey="service_area"
+          defaults={{ full_name: "Hướng dẫn viên mới", published: false }}
+          fields={GUIDE_FIELDS}
+        />
+      )}
+    </div>
+  );
+}
+
 
 const EVENT_FIELDS: CrudField[] = [
   { key: "title", label: "Tên sự kiện", type: "text" },
