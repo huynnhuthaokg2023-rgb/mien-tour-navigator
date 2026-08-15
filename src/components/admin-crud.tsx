@@ -15,13 +15,20 @@ type Row = Record<string, unknown> & { id: string };
 export type CrudField = {
   key: string;
   label: string;
-  type: "text" | "date" | "number" | "textarea" | "switch" | "list" | "file" | "select";
+  type: "text" | "date" | "number" | "textarea" | "switch" | "list" | "file" | "select" | "gallery";
   rows?: number;
   accept?: string;
   options?: { value: string; label: string }[];
+  /** Bảng ảnh con dùng cho type = "gallery" */
+  childTable?: GalleryTable;
+  /** Cột khoá ngoại trong bảng ảnh con */
+  childKey?: string;
 };
 
+export type GalleryTable = "vehicle_partner_images" | "guide_images";
+
 export type CrudTable = "tours" | "vehicle_partners" | "guides" | "events";
+
 
 export function AdminCrud({
   table,
