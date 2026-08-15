@@ -89,16 +89,57 @@ export type Database = {
         }
         Relationships: []
       }
+      guide_images: {
+        Row: {
+          caption: string
+          created_at: string
+          guide_id: string
+          id: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          caption?: string
+          created_at?: string
+          guide_id: string
+          id?: string
+          sort_order?: number
+          url: string
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          guide_id?: string
+          id?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guide_images_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "guides"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guides: {
         Row: {
+          availability_status: string
           bio: string
+          birth_date: string | null
           certificate_url: string | null
           created_at: string
           email: string
           experience: string
+          facebook: string
+          featured: boolean
           full_name: string
+          gender: string
           id: string
           languages: string[]
+          nationality: string
           phone: string
           photo_url: string | null
           price_note: string
@@ -106,18 +147,26 @@ export type Database = {
           rating: number
           service_area: string
           sort_order: number
+          specialties: string
           updated_at: string
+          video_url: string | null
           zalo: string
         }
         Insert: {
+          availability_status?: string
           bio?: string
+          birth_date?: string | null
           certificate_url?: string | null
           created_at?: string
           email?: string
           experience?: string
+          facebook?: string
+          featured?: boolean
           full_name: string
+          gender?: string
           id?: string
           languages?: string[]
+          nationality?: string
           phone?: string
           photo_url?: string | null
           price_note?: string
@@ -125,18 +174,26 @@ export type Database = {
           rating?: number
           service_area?: string
           sort_order?: number
+          specialties?: string
           updated_at?: string
+          video_url?: string | null
           zalo?: string
         }
         Update: {
+          availability_status?: string
           bio?: string
+          birth_date?: string | null
           certificate_url?: string | null
           created_at?: string
           email?: string
           experience?: string
+          facebook?: string
+          featured?: boolean
           full_name?: string
+          gender?: string
           id?: string
           languages?: string[]
+          nationality?: string
           phone?: string
           photo_url?: string | null
           price_note?: string
@@ -144,7 +201,9 @@ export type Database = {
           rating?: number
           service_area?: string
           sort_order?: number
+          specialties?: string
           updated_at?: string
+          video_url?: string | null
           zalo?: string
         }
         Relationships: []
@@ -560,16 +619,57 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicle_partner_images: {
+        Row: {
+          caption: string
+          created_at: string
+          id: string
+          partner_id: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          caption?: string
+          created_at?: string
+          id?: string
+          partner_id: string
+          sort_order?: number
+          url: string
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          id?: string
+          partner_id?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_partner_images_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vehicle_partners: {
         Row: {
+          address: string
+          availability_status: string
+          contact_person: string
+          cover_image_url: string | null
           created_at: string
           description: string
           email: string
           facebook: string
+          featured: boolean
           id: string
           license_url: string | null
           logo_url: string | null
           name: string
+          notes: string
           phone: string
           price_list_url: string | null
           price_note: string
@@ -579,18 +679,25 @@ export type Database = {
           updated_at: string
           vehicle_image_url: string | null
           vehicle_types: string[]
+          video_url: string | null
           website: string
           zalo: string
         }
         Insert: {
+          address?: string
+          availability_status?: string
+          contact_person?: string
+          cover_image_url?: string | null
           created_at?: string
           description?: string
           email?: string
           facebook?: string
+          featured?: boolean
           id?: string
           license_url?: string | null
           logo_url?: string | null
           name: string
+          notes?: string
           phone?: string
           price_list_url?: string | null
           price_note?: string
@@ -600,18 +707,25 @@ export type Database = {
           updated_at?: string
           vehicle_image_url?: string | null
           vehicle_types?: string[]
+          video_url?: string | null
           website?: string
           zalo?: string
         }
         Update: {
+          address?: string
+          availability_status?: string
+          contact_person?: string
+          cover_image_url?: string | null
           created_at?: string
           description?: string
           email?: string
           facebook?: string
+          featured?: boolean
           id?: string
           license_url?: string | null
           logo_url?: string | null
           name?: string
+          notes?: string
           phone?: string
           price_list_url?: string | null
           price_note?: string
@@ -621,6 +735,7 @@ export type Database = {
           updated_at?: string
           vehicle_image_url?: string | null
           vehicle_types?: string[]
+          video_url?: string | null
           website?: string
           zalo?: string
         }
