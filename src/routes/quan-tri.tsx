@@ -113,30 +113,8 @@ function AdminPage() {
 
           {tab === "locations" && <AdminList onEdit={setEditingId} />}
           {tab === "tours" && <ToursAdmin />}
-          {tab === "vehicles" && (
-            <div className="mt-6">
-              <AdminCrud
-                table="vehicle_partners"
-                title="ĐỐI TÁC THUÊ XE"
-                titleKey="name"
-                subtitleKey="service_area"
-                defaults={{ name: "Đối tác mới", published: false }}
-                fields={VEHICLE_FIELDS}
-              />
-            </div>
-          )}
-          {tab === "guides" && (
-            <div className="mt-6">
-              <AdminCrud
-                table="guides"
-                title="HƯỚNG DẪN VIÊN"
-                titleKey="full_name"
-                subtitleKey="service_area"
-                defaults={{ full_name: "Hướng dẫn viên mới", published: false }}
-                fields={GUIDE_FIELDS}
-              />
-            </div>
-          )}
+          {tab === "partners" && <PartnersAdmin />}
+
           {tab === "events" && (
             <div className="mt-6">
               <AdminCrud
