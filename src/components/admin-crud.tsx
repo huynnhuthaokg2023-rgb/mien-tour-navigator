@@ -250,7 +250,19 @@ function CrudEditor({
               </select>
             </div>
           );
+        if (f.type === "gallery")
+          return (
+            <GalleryEditor
+              key={f.key}
+              label={f.label}
+              table={f.childTable ?? "vehicle_partner_images"}
+              fkKey={f.childKey ?? "partner_id"}
+              ownerId={row.id}
+              storageFolder={`${table}/${row.id}/gallery`}
+            />
+          );
         if (f.type === "file")
+
           return (
             <div key={f.key}>
               <Label>{f.label}</Label>
