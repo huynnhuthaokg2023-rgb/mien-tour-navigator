@@ -327,3 +327,98 @@ function CrudEditor({
     </div>
   );
 }
+
+type GalleryRow = { id: string; url: string; caption: string; sort_order: number };
+
+function GalleryEditor({
+  label,
+  table,
+  fkKey,
+  ownerId,
+  storageFolder,
+}: {
+  label: string;
+  table: GalleryTable;
+  fkKey: string;
+  ownerId: string;
+  storageFolder: string;
+}) {
+  const qc = useQueryClient();
+  const [busy, setBusy] = useState(false);
+
+  const images = useQuery({
+    queryKey: ["admin-gallery", table, ownerId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from(table)
+        .select("id, url, caption, sort_order")
+        .eq(fkKey, ownerId)
+        .order("sort_order");
+      if (error) throw error;
+      return (data ?? []) as GalleryRow[];
+    },
+  });
+
+  const addFiles = async (files: File[]) => {
+    setBusy(true);
+    try {
+      const base = images.data?.length ?? 0;
+      for (let i = 0; i < files.length; i += 1) {
+        const url = await uploadMedia(storageFolder, files[i]!);
+        const { error } = await supabase
+          .from(table)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .insert({ [fkKey]: ownerId, url, sort_order: base + i } as any);
+        if (error) throw error;
+      }
+      await qc.invalidateQueries({ queryKey: ["admin-gallery", table, ownerId] });
+      toast.success("Đã thêm ảnh.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Tải ảnh thất bại");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const removeImage = async (id: string) => {
+    const { error } = await supabase.from(table).delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    await qc.invalidateQueries({ queryKey: ["admin-gallery", table, ownerId] });
+  };
+
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Input
+        type="file"
+        accept="image/*"
+        multiple
+        disabled={busy}
+        onChange={(e) => {
+          const files = Array.from(e.target.files ?? []);
+          if (files.length) addFiles(files);
+          e.target.value = "";
+        }}
+        className="mt-1 rounded-2xl"
+      />
+      <div className="mt-2 grid grid-cols-3 gap-2">
+        {(images.data ?? []).map((img) => (
+          <div key={img.id} className="relative overflow-hidden rounded-2xl bg-secondary">
+            <img src={img.url} alt={img.caption || "Ảnh"} className="h-24 w-full object-cover" />
+            <button
+              type="button"
+              onClick={() => removeImage(img.id)}
+              aria-label="Xoá ảnh"
+              className="absolute right-1 top-1 grid size-7 place-items-center rounded-lg bg-card/90 text-destructive"
+            >
+              <Trash2 className="size-3.5" />
+            </button>
+          </div>
+        ))}
+      </div>
+      {!images.isLoading && (images.data ?? []).length === 0 && (
+        <p className="mt-1 text-xs text-muted-foreground">Chưa có ảnh nào.</p>
+      )}
+    </div>
+  );
+}
