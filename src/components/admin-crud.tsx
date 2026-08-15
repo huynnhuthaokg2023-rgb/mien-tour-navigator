@@ -15,13 +15,22 @@ type Row = Record<string, unknown> & { id: string };
 export type CrudField = {
   key: string;
   label: string;
-  type: "text" | "date" | "number" | "textarea" | "switch" | "list" | "file" | "select";
+  type: "text" | "date" | "number" | "textarea" | "switch" | "list" | "file" | "select" | "gallery";
   rows?: number;
   accept?: string;
   options?: { value: string; label: string }[];
+  /** Bảng ảnh con dùng cho type = "gallery" */
+  childTable?: GalleryTable;
+  /** Cột khoá ngoại trong bảng ảnh con */
+  childKey?: string;
+  /** Cho phép bỏ trống (select). Mặc định true */
+  nullable?: boolean;
 };
 
+export type GalleryTable = "vehicle_partner_images" | "guide_images";
+
 export type CrudTable = "tours" | "vehicle_partners" | "guides" | "events";
+
 
 export function AdminCrud({
   table,
@@ -231,10 +240,12 @@ function CrudEditor({
               <select
                 id={f.key}
                 value={(value as string) ?? ""}
-                onChange={(e) => set({ [f.key]: e.target.value || null })}
+                onChange={(e) =>
+                  set({ [f.key]: e.target.value || (f.nullable === false ? "" : null) })
+                }
                 className="mt-1 h-12 w-full rounded-2xl border border-input bg-background px-3 text-sm"
               >
-                <option value="">— Không chọn —</option>
+                {f.nullable === false ? null : <option value="">— Không chọn —</option>}
                 {(f.options ?? []).map((o) => (
                   <option key={o.value} value={o.value}>
                     {o.label}
@@ -243,7 +254,19 @@ function CrudEditor({
               </select>
             </div>
           );
+        if (f.type === "gallery")
+          return (
+            <GalleryEditor
+              key={f.key}
+              label={f.label}
+              table={f.childTable ?? "vehicle_partner_images"}
+              fkKey={f.childKey ?? "partner_id"}
+              ownerId={row.id}
+              storageFolder={`${table}/${row.id}/gallery`}
+            />
+          );
         if (f.type === "file")
+
           return (
             <div key={f.key}>
               <Label>{f.label}</Label>
@@ -305,6 +328,101 @@ function CrudEditor({
       <Button onClick={save} disabled={busy} className="h-13 w-full rounded-2xl text-base font-bold">
         LƯU THAY ĐỔI
       </Button>
+    </div>
+  );
+}
+
+type GalleryRow = { id: string; url: string; caption: string; sort_order: number };
+
+function GalleryEditor({
+  label,
+  table,
+  fkKey,
+  ownerId,
+  storageFolder,
+}: {
+  label: string;
+  table: GalleryTable;
+  fkKey: string;
+  ownerId: string;
+  storageFolder: string;
+}) {
+  const qc = useQueryClient();
+  const [busy, setBusy] = useState(false);
+
+  const images = useQuery({
+    queryKey: ["admin-gallery", table, ownerId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from(table)
+        .select("id, url, caption, sort_order")
+        .eq(fkKey, ownerId)
+        .order("sort_order");
+      if (error) throw error;
+      return (data ?? []) as GalleryRow[];
+    },
+  });
+
+  const addFiles = async (files: File[]) => {
+    setBusy(true);
+    try {
+      const base = images.data?.length ?? 0;
+      for (let i = 0; i < files.length; i += 1) {
+        const url = await uploadMedia(storageFolder, files[i]!);
+        const { error } = await supabase
+          .from(table)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .insert({ [fkKey]: ownerId, url, sort_order: base + i } as any);
+        if (error) throw error;
+      }
+      await qc.invalidateQueries({ queryKey: ["admin-gallery", table, ownerId] });
+      toast.success("Đã thêm ảnh.");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Tải ảnh thất bại");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const removeImage = async (id: string) => {
+    const { error } = await supabase.from(table).delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    await qc.invalidateQueries({ queryKey: ["admin-gallery", table, ownerId] });
+  };
+
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Input
+        type="file"
+        accept="image/*"
+        multiple
+        disabled={busy}
+        onChange={(e) => {
+          const files = Array.from(e.target.files ?? []);
+          if (files.length) addFiles(files);
+          e.target.value = "";
+        }}
+        className="mt-1 rounded-2xl"
+      />
+      <div className="mt-2 grid grid-cols-3 gap-2">
+        {(images.data ?? []).map((img) => (
+          <div key={img.id} className="relative overflow-hidden rounded-2xl bg-secondary">
+            <img src={img.url} alt={img.caption || "Ảnh"} className="h-24 w-full object-cover" />
+            <button
+              type="button"
+              onClick={() => removeImage(img.id)}
+              aria-label="Xoá ảnh"
+              className="absolute right-1 top-1 grid size-7 place-items-center rounded-lg bg-card/90 text-destructive"
+            >
+              <Trash2 className="size-3.5" />
+            </button>
+          </div>
+        ))}
+      </div>
+      {!images.isLoading && (images.data ?? []).length === 0 && (
+        <p className="mt-1 text-xs text-muted-foreground">Chưa có ảnh nào.</p>
+      )}
     </div>
   );
 }
