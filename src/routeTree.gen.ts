@@ -9,60 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as YeuThichRouteImport } from './routes/yeu-thich'
-import { Route as TimKiemRouteImport } from './routes/tim-kiem'
-import { Route as ThueXeRouteImport } from './routes/thue-xe'
-import { Route as SuKienRouteImport } from './routes/su-kien'
-import { Route as QuanTriRouteImport } from './routes/quan-tri'
-import { Route as LienHeRouteImport } from './routes/lien-he'
-import { Route as HuongDanVienRouteImport } from './routes/huong-dan-vien'
-import { Route as HuongDanRouteImport } from './routes/huong-dan'
-import { Route as GioiThieuRouteImport } from './routes/gioi-thieu'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TourIndexRouteImport } from './routes/tour.index'
+import { Route as GioiThieuRouteImport } from './routes/gioi-thieu'
+import { Route as HuongDanRouteImport } from './routes/huong-dan'
+import { Route as HuongDanVienRouteImport } from './routes/huong-dan-vien'
+import { Route as LienHeRouteImport } from './routes/lien-he'
+import { Route as QuanTriRouteImport } from './routes/quan-tri'
+import { Route as SuKienRouteImport } from './routes/su-kien'
+import { Route as ThueXeRouteImport } from './routes/thue-xe'
+import { Route as TimKiemRouteImport } from './routes/tim-kiem'
+import { Route as YeuThichRouteImport } from './routes/yeu-thich'
 import { Route as DiaDiemIndexRouteImport } from './routes/dia-diem.index'
-import { Route as TourSlugRouteImport } from './routes/tour.$slug'
-import { Route as KhuVucSlugRouteImport } from './routes/khu-vuc.$slug'
 import { Route as DiaDiemSlugRouteImport } from './routes/dia-diem.$slug'
+import { Route as KhuVucSlugRouteImport } from './routes/khu-vuc.$slug'
+import { Route as TourIndexRouteImport } from './routes/tour.index'
+import { Route as TourSlugRouteImport } from './routes/tour.$slug'
 
-const YeuThichRoute = YeuThichRouteImport.update({
-  id: '/yeu-thich',
-  path: '/yeu-thich',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TimKiemRoute = TimKiemRouteImport.update({
-  id: '/tim-kiem',
-  path: '/tim-kiem',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ThueXeRoute = ThueXeRouteImport.update({
-  id: '/thue-xe',
-  path: '/thue-xe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SuKienRoute = SuKienRouteImport.update({
-  id: '/su-kien',
-  path: '/su-kien',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuanTriRoute = QuanTriRouteImport.update({
-  id: '/quan-tri',
-  path: '/quan-tri',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LienHeRoute = LienHeRouteImport.update({
-  id: '/lien-he',
-  path: '/lien-he',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HuongDanVienRoute = HuongDanVienRouteImport.update({
-  id: '/huong-dan-vien',
-  path: '/huong-dan-vien',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HuongDanRoute = HuongDanRouteImport.update({
-  id: '/huong-dan',
-  path: '/huong-dan',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GioiThieuRoute = GioiThieuRouteImport.update({
@@ -70,14 +35,44 @@ const GioiThieuRoute = GioiThieuRouteImport.update({
   path: '/gioi-thieu',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const HuongDanRoute = HuongDanRouteImport.update({
+  id: '/huong-dan',
+  path: '/huong-dan',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TourIndexRoute = TourIndexRouteImport.update({
-  id: '/tour/',
-  path: '/tour/',
+const HuongDanVienRoute = HuongDanVienRouteImport.update({
+  id: '/huong-dan-vien',
+  path: '/huong-dan-vien',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LienHeRoute = LienHeRouteImport.update({
+  id: '/lien-he',
+  path: '/lien-he',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuanTriRoute = QuanTriRouteImport.update({
+  id: '/quan-tri',
+  path: '/quan-tri',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuKienRoute = SuKienRouteImport.update({
+  id: '/su-kien',
+  path: '/su-kien',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThueXeRoute = ThueXeRouteImport.update({
+  id: '/thue-xe',
+  path: '/thue-xe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimKiemRoute = TimKiemRouteImport.update({
+  id: '/tim-kiem',
+  path: '/tim-kiem',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const YeuThichRoute = YeuThichRouteImport.update({
+  id: '/yeu-thich',
+  path: '/yeu-thich',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiaDiemIndexRoute = DiaDiemIndexRouteImport.update({
@@ -85,9 +80,9 @@ const DiaDiemIndexRoute = DiaDiemIndexRouteImport.update({
   path: '/dia-diem/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TourSlugRoute = TourSlugRouteImport.update({
-  id: '/tour/$slug',
-  path: '/tour/$slug',
+const DiaDiemSlugRoute = DiaDiemSlugRouteImport.update({
+  id: '/dia-diem/$slug',
+  path: '/dia-diem/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KhuVucSlugRoute = KhuVucSlugRouteImport.update({
@@ -95,9 +90,14 @@ const KhuVucSlugRoute = KhuVucSlugRouteImport.update({
   path: '/khu-vuc/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DiaDiemSlugRoute = DiaDiemSlugRouteImport.update({
-  id: '/dia-diem/$slug',
-  path: '/dia-diem/$slug',
+const TourIndexRoute = TourIndexRouteImport.update({
+  id: '/tour/',
+  path: '/tour/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TourSlugRoute = TourSlugRouteImport.update({
+  id: '/tour/$slug',
+  path: '/tour/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -227,60 +227,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/yeu-thich': {
-      id: '/yeu-thich'
-      path: '/yeu-thich'
-      fullPath: '/yeu-thich'
-      preLoaderRoute: typeof YeuThichRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tim-kiem': {
-      id: '/tim-kiem'
-      path: '/tim-kiem'
-      fullPath: '/tim-kiem'
-      preLoaderRoute: typeof TimKiemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/thue-xe': {
-      id: '/thue-xe'
-      path: '/thue-xe'
-      fullPath: '/thue-xe'
-      preLoaderRoute: typeof ThueXeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/su-kien': {
-      id: '/su-kien'
-      path: '/su-kien'
-      fullPath: '/su-kien'
-      preLoaderRoute: typeof SuKienRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quan-tri': {
-      id: '/quan-tri'
-      path: '/quan-tri'
-      fullPath: '/quan-tri'
-      preLoaderRoute: typeof QuanTriRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lien-he': {
-      id: '/lien-he'
-      path: '/lien-he'
-      fullPath: '/lien-he'
-      preLoaderRoute: typeof LienHeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/huong-dan-vien': {
-      id: '/huong-dan-vien'
-      path: '/huong-dan-vien'
-      fullPath: '/huong-dan-vien'
-      preLoaderRoute: typeof HuongDanVienRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/huong-dan': {
-      id: '/huong-dan'
-      path: '/huong-dan'
-      fullPath: '/huong-dan'
-      preLoaderRoute: typeof HuongDanRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gioi-thieu': {
@@ -290,18 +241,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GioiThieuRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/huong-dan': {
+      id: '/huong-dan'
+      path: '/huong-dan'
+      fullPath: '/huong-dan'
+      preLoaderRoute: typeof HuongDanRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tour/': {
-      id: '/tour/'
-      path: '/tour'
-      fullPath: '/tour/'
-      preLoaderRoute: typeof TourIndexRouteImport
+    '/huong-dan-vien': {
+      id: '/huong-dan-vien'
+      path: '/huong-dan-vien'
+      fullPath: '/huong-dan-vien'
+      preLoaderRoute: typeof HuongDanVienRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lien-he': {
+      id: '/lien-he'
+      path: '/lien-he'
+      fullPath: '/lien-he'
+      preLoaderRoute: typeof LienHeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quan-tri': {
+      id: '/quan-tri'
+      path: '/quan-tri'
+      fullPath: '/quan-tri'
+      preLoaderRoute: typeof QuanTriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/su-kien': {
+      id: '/su-kien'
+      path: '/su-kien'
+      fullPath: '/su-kien'
+      preLoaderRoute: typeof SuKienRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thue-xe': {
+      id: '/thue-xe'
+      path: '/thue-xe'
+      fullPath: '/thue-xe'
+      preLoaderRoute: typeof ThueXeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tim-kiem': {
+      id: '/tim-kiem'
+      path: '/tim-kiem'
+      fullPath: '/tim-kiem'
+      preLoaderRoute: typeof TimKiemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/yeu-thich': {
+      id: '/yeu-thich'
+      path: '/yeu-thich'
+      fullPath: '/yeu-thich'
+      preLoaderRoute: typeof YeuThichRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dia-diem/': {
@@ -311,11 +304,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiaDiemIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tour/$slug': {
-      id: '/tour/$slug'
-      path: '/tour/$slug'
-      fullPath: '/tour/$slug'
-      preLoaderRoute: typeof TourSlugRouteImport
+    '/dia-diem/$slug': {
+      id: '/dia-diem/$slug'
+      path: '/dia-diem/$slug'
+      fullPath: '/dia-diem/$slug'
+      preLoaderRoute: typeof DiaDiemSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/khu-vuc/$slug': {
@@ -325,11 +318,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KhuVucSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dia-diem/$slug': {
-      id: '/dia-diem/$slug'
-      path: '/dia-diem/$slug'
-      fullPath: '/dia-diem/$slug'
-      preLoaderRoute: typeof DiaDiemSlugRouteImport
+    '/tour/': {
+      id: '/tour/'
+      path: '/tour'
+      fullPath: '/tour/'
+      preLoaderRoute: typeof TourIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tour/$slug': {
+      id: '/tour/$slug'
+      path: '/tour/$slug'
+      fullPath: '/tour/$slug'
+      preLoaderRoute: typeof TourSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
