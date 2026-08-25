@@ -4,26 +4,62 @@ import { CalendarDays, MapPin } from "lucide-react";
 import { fetchEvents } from "@/lib/services";
 import { coverFor } from "@/lib/images";
 
+const SITE_URL = "https://mien-tour-navigator.lovable.app";
+const EVENTS_URL = `${SITE_URL}/su-kien`;
+
 export const Route = createFileRoute("/su-kien")({
-  head: () => ({
+  loader: () => fetchEvents(),
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "Sự kiện & lễ hội | MIỀN TOUR" },
+      { title: "Sự kiện & lễ hội Rạch Giá – Kiên Giang | MIỀN TOUR" },
       {
         name: "description",
         content:
-          "Lịch sự kiện, lễ hội và hoạt động văn hoá địa phương để bạn lên kế hoạch cho chuyến đi.",
+          "Lịch sự kiện, lễ hội và hoạt động văn hoá địa phương tại Rạch Giá – Kiên Giang để bạn lên kế hoạch cho chuyến đi.",
       },
-      { property: "og:title", content: "Sự kiện & lễ hội | MIỀN TOUR" },
+      { property: "og:title", content: "Sự kiện & lễ hội Rạch Giá – Kiên Giang | MIỀN TOUR" },
       {
         property: "og:description",
         content: "Cập nhật các sự kiện văn hoá – du lịch đang diễn ra tại địa phương.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: EVENTS_URL },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: EVENTS_URL }],
+    scripts: (loaderData ?? []).length
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify(
+              (loaderData ?? []).slice(0, 20).map((e) => ({
+                "@context": "https://schema.org",
+                "@type": "Event",
+                name: e.title,
+                ...(e.description ? { description: e.description } : {}),
+                ...(e.start_date ? { startDate: e.start_date } : {}),
+                ...(e.end_date ? { endDate: e.end_date } : {}),
+                ...(e.place ? { location: { "@type": "Place", name: e.place } } : {}),
+                url: EVENTS_URL,
+              })),
+            ),
+          },
+        ]
+      : [],
   }),
   component: EventsPage,
+  errorComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+      <h1 className="text-2xl font-extrabold text-primary">Không tải được sự kiện</h1>
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+      <h1 className="text-2xl font-extrabold text-primary">Không tìm thấy trang</h1>
+    </div>
+  ),
 });
+
 
 function fmtDate(value: string | null) {
   if (!value) return "";
