@@ -23,26 +23,74 @@ import { embedVideoSrc, fetchLocations } from "@/lib/mien-tour";
 import { fetchGuides, fetchTour, fetchTourImages, GUIDE_DISCLAIMER } from "@/lib/services";
 import { coverFor } from "@/lib/images";
 
+const SITE_URL = "https://mien-tour-navigator.lovable.app";
+
 export const Route = createFileRoute("/tour/$slug")({
-  head: () => ({
-    meta: [
-      { title: "Chi tiết tour | MIỀN TOUR" },
-      {
-        name: "description",
-        content:
-          "Lịch trình, bản đồ, video, thư viện ảnh và Audio Guide Việt – Anh cho tour tham quan của bạn.",
-      },
-      { property: "og:title", content: "Chi tiết tour | MIỀN TOUR" },
-      {
-        property: "og:description",
-        content: "Xem lịch trình chi tiết và bắt đầu tour cùng MIỀN TOUR.",
-      },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  loader: ({ params }) => fetchTour(params.slug),
+  head: ({ params, loaderData }) => {
+    const tour = loaderData ?? null;
+    const name = tour?.name ?? "Chi tiết tour";
+    const title = `${name} – Tour du lịch | MIỀN TOUR`;
+    const description =
+      (tour?.summary || tour?.itinerary || "").replace(/\s+/g, " ").trim().slice(0, 155) ||
+      "Lịch trình, bản đồ, video, thư viện ảnh và Audio Guide Việt – Anh cho tour tham quan của bạn.";
+    const url = `${SITE_URL}/tour/${params.slug}`;
+    const image = tour?.cover_image_url || null;
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
+        { name: "twitter:card", content: "summary_large_image" },
+        ...(image && image.startsWith("https://")
+          ? [
+              { property: "og:image", content: image },
+              { name: "twitter:image", content: image },
+            ]
+          : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: tour
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "TouristTrip",
+                name: tour.name,
+                description,
+                url,
+                ...(tour.itinerary ? { itinerary: tour.itinerary } : {}),
+                ...(tour.duration_label ? { duration: tour.duration_label } : {}),
+              }),
+            },
+          ]
+        : [],
+    };
+  },
   component: TourDetailPage,
+  errorComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+      <h1 className="text-2xl font-extrabold text-primary">Không tải được tour</h1>
+      <Link to="/tour" className="mt-4 inline-block font-semibold text-primary">
+        Xem tour khác
+      </Link>
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+      <h1 className="text-2xl font-extrabold text-primary">Không tìm thấy tour</h1>
+      <Link to="/tour" className="mt-4 inline-block font-semibold text-primary">
+        Xem tour khác
+      </Link>
+    </div>
+  ),
 });
+
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
