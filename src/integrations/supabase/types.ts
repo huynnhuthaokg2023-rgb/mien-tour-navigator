@@ -144,10 +144,7 @@ export type Database = {
           photo_url: string | null
           price_note: string
           published: boolean
-          qr_image_url: string | null
           rating: number
-          requires_payment: boolean
-          price: number
           service_area: string
           sort_order: number
           specialties: string
@@ -174,10 +171,7 @@ export type Database = {
           photo_url?: string | null
           price_note?: string
           published?: boolean
-          qr_image_url?: string | null
           rating?: number
-          requires_payment?: boolean
-          price?: number
           service_area?: string
           sort_order?: number
           specialties?: string
@@ -204,10 +198,7 @@ export type Database = {
           photo_url?: string | null
           price_note?: string
           published?: boolean
-          qr_image_url?: string | null
           rating?: number
-          requires_payment?: boolean
-          price?: number
           service_area?: string
           sort_order?: number
           specialties?: string
@@ -546,9 +537,6 @@ export type Database = {
           name: string
           price_note: string
           published: boolean
-          qr_image_url: string | null
-          requires_payment: boolean
-          price: number
           slug: string
           sort_order: number
           summary: string
@@ -571,9 +559,6 @@ export type Database = {
           name: string
           price_note?: string
           published?: boolean
-          qr_image_url?: string | null
-          requires_payment?: boolean
-          price?: number
           slug: string
           sort_order?: number
           summary?: string
@@ -596,9 +581,6 @@ export type Database = {
           name?: string
           price_note?: string
           published?: boolean
-          qr_image_url?: string | null
-          requires_payment?: boolean
-          price?: number
           slug?: string
           sort_order?: number
           summary?: string
@@ -692,9 +674,6 @@ export type Database = {
           price_list_url: string | null
           price_note: string
           published: boolean
-          qr_image_url: string | null
-          requires_payment: boolean
-          price: number
           service_area: string
           sort_order: number
           updated_at: string
@@ -723,9 +702,6 @@ export type Database = {
           price_list_url?: string | null
           price_note?: string
           published?: boolean
-          qr_image_url?: string | null
-          requires_payment?: boolean
-          price?: number
           service_area?: string
           sort_order?: number
           updated_at?: string
@@ -754,9 +730,6 @@ export type Database = {
           price_list_url?: string | null
           price_note?: string
           published?: boolean
-          qr_image_url?: string | null
-          requires_payment?: boolean
-          price?: number
           service_area?: string
           sort_order?: number
           updated_at?: string
