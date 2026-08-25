@@ -8,24 +8,41 @@ import { OnboardingSheet, useFirstVisitOnboarding } from "@/components/onboardin
 import { fetchLocations, fetchRegions } from "@/lib/mien-tour";
 import { coverFor, heroImage } from "@/lib/images";
 
+const SITE_URL = "https://mien-tour-navigator.lovable.app";
+const HOME_TITLE = "MIỀN TOUR Rạch Giá – Địa điểm, tour & Audio Guide Việt/Anh";
+const HOME_DESCRIPTION =
+  "Cẩm nang du lịch Rạch Giá – Kiên Giang: địa điểm nổi bật, tour theo lịch trình, thuê xe, hướng dẫn viên, Audio Guide tiếng Việt – English và chỉ đường Google Maps.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MIỀN TOUR – Khám phá điểm đến tiếp theo của bạn" },
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESCRIPTION },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESCRIPTION },
+    ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
+    scripts: [
       {
-        name: "description",
-        content:
-          "Khám phá điểm đến địa phương cùng MIỀN TOUR: thông tin, hình ảnh, video, Audio Guide tiếng Việt – English và chỉ đường Google Maps.",
-      },
-      { property: "og:title", content: "MIỀN TOUR – Khám phá điểm đến tiếp theo của bạn" },
-      {
-        property: "og:description",
-        content: "Khám phá điểm đến địa phương cùng MIỀN TOUR: thông tin, hình ảnh, video, Audio Guide tiếng Việt – English và chỉ đường Google Maps.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "MIỀN TOUR",
+          url: `${SITE_URL}/`,
+          description: HOME_DESCRIPTION,
+        }),
       },
     ],
   }),
   component: HomePage,
 });
+
 
 function HomePage() {
   const onboarding = useFirstVisitOnboarding();
