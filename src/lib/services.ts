@@ -146,21 +146,36 @@ export async function fetchTourImages(tourId: string): Promise<TourImage[]> {
   return (data ?? []) as TourImage[];
 }
 
+// Cột công khai: không bao gồm email / người liên hệ (nhà xe) và email / ngày sinh /
+// facebook cá nhân (HDV) — các cột này chỉ quản trị viên mới đọc được.
+const PARTNER_PUBLIC_COLUMNS =
+  "id,name,logo_url,cover_image_url,vehicle_image_url,vehicle_types,price_note,service_area,description,phone,zalo,facebook,website,price_list_url,license_url,video_url,address,notes,featured,availability_status,sort_order,published,created_at,updated_at";
+
+const GUIDE_PUBLIC_COLUMNS =
+  "id,full_name,photo_url,languages,experience,rating,price_note,service_area,bio,phone,zalo,certificate_url,video_url,gender,nationality,specialties,featured,availability_status,sort_order,published,created_at,updated_at";
+
 export async function fetchVehiclePartners(includeHidden = false): Promise<VehiclePartner[]> {
-  let q = supabase.from("vehicle_partners").select("*").order("sort_order");
+  let q = supabase
+    .from("vehicle_partners")
+    .select(includeHidden ? "*" : PARTNER_PUBLIC_COLUMNS)
+    .order("sort_order");
   if (!includeHidden) q = q.eq("published", true);
   const { data, error } = await q;
   if (error) throw error;
-  return (data ?? []) as VehiclePartner[];
+  return (data ?? []) as unknown as VehiclePartner[];
 }
 
 export async function fetchGuides(includeHidden = false): Promise<Guide[]> {
-  let q = supabase.from("guides").select("*").order("sort_order");
+  let q = supabase
+    .from("guides")
+    .select(includeHidden ? "*" : GUIDE_PUBLIC_COLUMNS)
+    .order("sort_order");
   if (!includeHidden) q = q.eq("published", true);
   const { data, error } = await q;
   if (error) throw error;
-  return (data ?? []) as Guide[];
+  return (data ?? []) as unknown as Guide[];
 }
+
 
 export async function fetchEvents(includeHidden = false): Promise<TourEvent[]> {
   let q = supabase.from("events").select("*").order("sort_order");
