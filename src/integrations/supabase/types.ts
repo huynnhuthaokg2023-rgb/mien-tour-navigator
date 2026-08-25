@@ -122,6 +122,13 @@ export type Database = {
             referencedRelation: "guides"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "guide_images_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "guides_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       guides: {
@@ -471,10 +478,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "service_bookings_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "guides_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "service_bookings_partner_id_fkey"
             columns: ["partner_id"]
             isOneToOne: false
             referencedRelation: "vehicle_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_bookings_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_partners_public"
             referencedColumns: ["id"]
           },
           {
@@ -652,6 +673,13 @@ export type Database = {
             referencedRelation: "vehicle_partners"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vehicle_partner_images_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_partners_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vehicle_partners: {
@@ -743,7 +771,162 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      guides_public: {
+        Row: {
+          availability_status: string | null
+          bio: string | null
+          certificate_url: string | null
+          created_at: string | null
+          experience: string | null
+          featured: boolean | null
+          full_name: string | null
+          gender: string | null
+          id: string | null
+          languages: string[] | null
+          nationality: string | null
+          phone: string | null
+          photo_url: string | null
+          price_note: string | null
+          published: boolean | null
+          rating: number | null
+          service_area: string | null
+          sort_order: number | null
+          specialties: string | null
+          updated_at: string | null
+          video_url: string | null
+          zalo: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          bio?: string | null
+          certificate_url?: string | null
+          created_at?: string | null
+          experience?: string | null
+          featured?: boolean | null
+          full_name?: string | null
+          gender?: string | null
+          id?: string | null
+          languages?: string[] | null
+          nationality?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          price_note?: string | null
+          published?: boolean | null
+          rating?: number | null
+          service_area?: string | null
+          sort_order?: number | null
+          specialties?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+          zalo?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          bio?: string | null
+          certificate_url?: string | null
+          created_at?: string | null
+          experience?: string | null
+          featured?: boolean | null
+          full_name?: string | null
+          gender?: string | null
+          id?: string | null
+          languages?: string[] | null
+          nationality?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          price_note?: string | null
+          published?: boolean | null
+          rating?: number | null
+          service_area?: string | null
+          sort_order?: number | null
+          specialties?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+          zalo?: string | null
+        }
+        Relationships: []
+      }
+      vehicle_partners_public: {
+        Row: {
+          address: string | null
+          availability_status: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          description: string | null
+          facebook: string | null
+          featured: boolean | null
+          id: string | null
+          license_url: string | null
+          logo_url: string | null
+          name: string | null
+          notes: string | null
+          phone: string | null
+          price_list_url: string | null
+          price_note: string | null
+          published: boolean | null
+          service_area: string | null
+          sort_order: number | null
+          updated_at: string | null
+          vehicle_image_url: string | null
+          vehicle_types: string[] | null
+          video_url: string | null
+          website: string | null
+          zalo: string | null
+        }
+        Insert: {
+          address?: string | null
+          availability_status?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          facebook?: string | null
+          featured?: boolean | null
+          id?: string | null
+          license_url?: string | null
+          logo_url?: string | null
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          price_list_url?: string | null
+          price_note?: string | null
+          published?: boolean | null
+          service_area?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+          vehicle_image_url?: string | null
+          vehicle_types?: string[] | null
+          video_url?: string | null
+          website?: string | null
+          zalo?: string | null
+        }
+        Update: {
+          address?: string | null
+          availability_status?: string | null
+          cover_image_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          facebook?: string | null
+          featured?: boolean | null
+          id?: string | null
+          license_url?: string | null
+          logo_url?: string | null
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          price_list_url?: string | null
+          price_note?: string | null
+          published?: boolean | null
+          service_area?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+          vehicle_image_url?: string | null
+          vehicle_types?: string[] | null
+          video_url?: string | null
+          website?: string | null
+          zalo?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
