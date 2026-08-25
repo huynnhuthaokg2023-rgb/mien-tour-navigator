@@ -25,24 +25,85 @@ import {
 import { coverFor } from "@/lib/images";
 
 
+const SITE_URL = "https://mien-tour-navigator.lovable.app";
+
 export const Route = createFileRoute("/dia-diem/$slug")({
-  head: () => ({
-    meta: [
-      { title: "Chi tiết địa điểm | MIỀN TOUR" },
-      {
-        name: "description",
-        content:
-          "Thông tin chi tiết, hình ảnh, video, Audio Guide tiếng Việt – English và bản đồ chỉ đường của địa điểm.",
-      },
-      { property: "og:title", content: "Chi tiết địa điểm | MIỀN TOUR" },
-      {
-        property: "og:description",
-        content: "Xem thông tin, nghe thuyết minh và chỉ đường tới địa điểm.",
-      },
-    ],
-  }),
+  loader: ({ params }) => fetchLocation(params.slug),
+  head: ({ params, loaderData }) => {
+    const loc = loaderData ?? null;
+    const name = loc?.name ?? "Chi tiết địa điểm";
+    const title = `${name} – Địa điểm du lịch | MIỀN TOUR`;
+    const description =
+      (loc?.short_description || loc?.description || "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 155) ||
+      "Thông tin chi tiết, hình ảnh, video, Audio Guide tiếng Việt – English và bản đồ chỉ đường của địa điểm.";
+    const url = `${SITE_URL}/dia-diem/${params.slug}`;
+    const image = loc?.cover_image_url || null;
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
+        { name: "twitter:card", content: "summary_large_image" },
+        ...(image && image.startsWith("https://")
+          ? [
+              { property: "og:image", content: image },
+              { name: "twitter:image", content: image },
+            ]
+          : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: loc
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "TouristAttraction",
+                name: loc.name,
+                description,
+                url,
+                ...(loc.address ? { address: loc.address } : {}),
+                ...(loc.latitude && loc.longitude
+                  ? {
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: loc.latitude,
+                        longitude: loc.longitude,
+                      },
+                    }
+                  : {}),
+              }),
+            },
+          ]
+        : [],
+    };
+  },
   component: LocationPage,
+  errorComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+      <h1 className="text-2xl font-extrabold text-primary">Không tải được địa điểm</h1>
+      <Link to="/dia-diem" className="mt-4 inline-block font-semibold text-primary">
+        Khám phá địa điểm khác
+      </Link>
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-6xl px-4 py-20 text-center">
+      <h1 className="text-2xl font-extrabold text-primary">Không tìm thấy địa điểm</h1>
+      <Link to="/dia-diem" className="mt-4 inline-block font-semibold text-primary">
+        Khám phá địa điểm khác
+      </Link>
+    </div>
+  ),
 });
+
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
